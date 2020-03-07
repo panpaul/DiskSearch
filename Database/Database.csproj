@@ -2,12 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <AssemblyName>Database</AssemblyName>
+    <RootNamespace>Database</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="jieba.NET" Version="0.42.2" />
     <PackageReference Include="Lucene.Net" Version="4.8.0-beta00007" />
     <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00007" />
+    <PackageReference Include="Lucene.Net.Queries" Version="4.8.0-beta00007" />
+    <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00007" />
   </ItemGroup>
 
 </Project>
