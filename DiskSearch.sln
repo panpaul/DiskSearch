@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocReader", "DocReader\DocReader.csproj", "{DE78999C-41A2-47A4-8116-B3406B58950C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocReader.Test", "DocReader.Test\DocReader.Test.csproj", "{A22C79A8-854E-4507-947D-D803F602411A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocReader.Test", "DocReader.Test\DocReader.Test.csproj", "{A22C79A8-854E-4507-947D-D803F602411A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.Test", "Database.Test\Database.Test.csproj", "{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{A22C79A8-854E-4507-947D-D803F602411A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A22C79A8-854E-4507-947D-D803F602411A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A22C79A8-854E-4507-947D-D803F602411A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

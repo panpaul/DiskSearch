@@ -15,12 +15,6 @@ namespace DiskSearch
             _index = new Engine(path);
         }
 
-        public void Test()
-        {
-            var r = _index.Search("武汉");
-            foreach (var s in r) Console.WriteLine(s.Path);
-        }
-
         public void Close()
         {
             _index.Close();
@@ -95,6 +89,8 @@ namespace DiskSearch
                     {
                         Console.WriteLine(e.Message);
                     }
+
+                _index.Flush();
 
                 foreach (var str in subDirs)
                     dirs.Push(str);

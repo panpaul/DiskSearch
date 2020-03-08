@@ -46,6 +46,10 @@ namespace Database
         public void Add(Document doc)
         {
             _writer.UpdateDocument(new Term("Path", doc.Get("Path")), doc);
+        }
+
+        public void Flush()
+        {
             _writer.Flush(true, true);
         }
 
@@ -78,6 +82,7 @@ namespace Database
 
         public void Close()
         {
+            Flush();
             try
             {
                 _writer.Dispose();

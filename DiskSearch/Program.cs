@@ -9,8 +9,9 @@ namespace DiskSearch
             Console.WriteLine("Hello World!");
             var walker = new Walker("./index/");
             walker.Walk("../../../../TestData/");
-            walker.Test();
             walker.Close();
+            var search = new Search("./index/");
+            search.Prompt();
         }
     }
 }

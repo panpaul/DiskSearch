@@ -68,11 +68,9 @@ namespace Database
             if (res)
             {
                 var word = _iter.Current;
-                if (word != null)
-                {
-                    var token = new Lucene.Net.Analysis.Token(word.Word, word.StartIndex, word.EndIndex);
-                    return token;
-                }
+                if (word == null) return null;
+                var token = new Lucene.Net.Analysis.Token(word.Word, word.StartIndex, word.EndIndex);
+                return token;
             }
 
             return null;
