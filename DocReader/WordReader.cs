@@ -26,7 +26,7 @@ namespace DocReader
             {
                 content.Append(element.InnerText);
             }
-
+            wDoc.Close();
             return content.ToString();
         }
     }

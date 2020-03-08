@@ -20,8 +20,11 @@ namespace DocReader
                 case ".docx":
                     reader = new WordReader(file);
                     return reader.ReadAll();
+                case ".xlsx":
+                    reader = new ExcelReader(file);
+                    return reader.ReadAll();
                 default:
-                    return file.Name.Replace(file.Extension,"");
+                    return file.Name.Replace(file.Extension, "");
             }
         }
     }

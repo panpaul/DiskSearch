@@ -22,11 +22,11 @@ namespace DocReader.Test
         }
 
         [Test]
-        public void DocReadTxt_Test()
+        public void DocReadExcel_Test()
         {
-            var file = new FileInfo("../../../../TestData/txt.txt");
-            const string strExpected = "Hello world!\r\n你好世界！";
+            var file = new FileInfo("../../../../TestData/ss1.xlsx");
             var strActual = Doc.Read(file);
+            var strExpected = "Sheet3 有 布尔 值 TRUE Sheet2 也 有 数据 测试 文档 这儿 有 数据 ";
             Assert.AreEqual(strExpected, strActual);
         }
 
@@ -35,7 +35,16 @@ namespace DocReader.Test
         {
             const string strExpected = "test1";
             var strActual = Doc.Read(new FileInfo("test1.test"));
-            Assert.AreEqual(strExpected,strActual);
+            Assert.AreEqual(strExpected, strActual);
+        }
+
+        [Test]
+        public void DocReadTxt_Test()
+        {
+            var file = new FileInfo("../../../../TestData/txt.txt");
+            const string strExpected = "Hello world!\r\n你好世界！";
+            var strActual = Doc.Read(file);
+            Assert.AreEqual(strExpected, strActual);
         }
     }
 }
