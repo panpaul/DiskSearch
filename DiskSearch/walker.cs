@@ -15,6 +15,12 @@ namespace DiskSearch
             _index = new Engine(path);
         }
 
+        public void Test()
+        {
+            var r = _index.Search("武汉");
+            foreach (var s in r) Console.WriteLine(s.Path);
+        }
+
         public void Close()
         {
             _index.Close();

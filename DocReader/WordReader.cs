@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Linq;
+﻿using System.IO;
 using System.Text;
-using DocumentFormat.OpenXml;
-using DocumentFormat.OpenXml.Drawing;
 using DocumentFormat.OpenXml.Packaging;
 
 namespace DocReader
@@ -22,10 +18,7 @@ namespace DocReader
             var wDoc = WordprocessingDocument.Open(_file.FullName, false);
             var body = wDoc.MainDocumentPart.Document.Body;
             var content = new StringBuilder();
-            foreach (var element in body.Elements())
-            {
-                content.Append(element.InnerText);
-            }
+            foreach (var element in body.Elements()) content.Append(element.InnerText);
             wDoc.Close();
             return content.ToString();
         }

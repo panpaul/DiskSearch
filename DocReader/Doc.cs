@@ -23,6 +23,9 @@ namespace DocReader
                 case ".xlsx":
                     reader = new ExcelReader(file);
                     return reader.ReadAll();
+                case ".pptx":
+                    reader = new PowerPointReader(file);
+                    return reader.ReadAll();
                 default:
                     return file.Name.Replace(file.Extension, "");
             }

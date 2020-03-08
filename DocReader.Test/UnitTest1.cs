@@ -39,6 +39,15 @@ namespace DocReader.Test
         }
 
         [Test]
+        public void DocReadPowerPoint_Test()
+        {
+            var file = new FileInfo("../../../../TestData/pp1.pptx");
+            var strActual = Doc.Read(file);
+            var strExpected = "中文测试 Helloworld 数据 ";
+            Assert.AreEqual(strExpected, strActual);
+        }
+
+        [Test]
         public void DocReadTxt_Test()
         {
             var file = new FileInfo("../../../../TestData/txt.txt");
