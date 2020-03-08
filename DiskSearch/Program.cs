@@ -8,7 +8,7 @@ namespace DiskSearch
         {
             Console.WriteLine("Hello World!");
             var walker = new Walker("./index/");
-            walker.Walk("C:\\development\\source");
+            walker.Walk("../../../../TestData/");
         }
     }
 }

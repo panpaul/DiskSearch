@@ -1,12 +1,12 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 
 namespace DocReader
 {
-    interface IReader
+    internal interface IReader
     {
         string ReadAll();
     }
+
     public class Doc
     {
         public static string Read(FileInfo file)
@@ -15,10 +15,13 @@ namespace DocReader
             switch (file.Extension)
             {
                 case ".txt":
-                    reader=new TextReader(file);
+                    reader = new TextReader(file);
+                    return reader.ReadAll();
+                case ".docx":
+                    reader = new WordReader(file);
                     return reader.ReadAll();
                 default:
-                    return file.Name;
+                    return file.Name.Replace(file.Extension,"");
             }
         }
     }
