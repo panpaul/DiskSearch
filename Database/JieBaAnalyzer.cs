@@ -5,11 +5,11 @@ using Lucene.Net.Analysis.Core;
 using Lucene.Net.Analysis.TokenAttributes;
 using Lucene.Net.Util;
 
-namespace Index
+namespace Database
 {
     internal class JieBaAnalyzer : Analyzer
     {
-        private TokenizerMode _mode;
+        private readonly TokenizerMode _mode;
 
         public JieBaAnalyzer(TokenizerMode Mode)
         {

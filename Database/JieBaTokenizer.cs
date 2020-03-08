@@ -1,24 +1,20 @@
-﻿#region
-
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 using JiebaNet.Segmenter;
 using Lucene.Net.Analysis;
 using Lucene.Net.Analysis.TokenAttributes;
 using Token = JiebaNet.Segmenter.Token;
 
-#endregion
-
-namespace Index
+namespace Database
 {
     internal class JieBaTokenizer : Tokenizer
     {
         private readonly TokenizerMode _mode;
         private readonly JiebaSegmenter _segmenter;
+        private readonly string _stopUrl = ConfigManager.StopWordsFile;
 
         private readonly List<string> _stopWords = new List<string>();
         private readonly List<Token> _wordList = new List<Token>();
-        private readonly string _stopUrl = ConfigManager.StopWordsFile;
         private string _inputText;
 
         private IEnumerator<Token> _iter;

@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiskSearch", "DiskSearch\Di
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Database.csproj", "{0FBD4480-7D6B-4B01-BE09-9AF8707FBF56}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DocReader", "DocReader\DocReader.csproj", "{DE78999C-41A2-47A4-8116-B3406B58950C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{0FBD4480-7D6B-4B01-BE09-9AF8707FBF56}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0FBD4480-7D6B-4B01-BE09-9AF8707FBF56}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0FBD4480-7D6B-4B01-BE09-9AF8707FBF56}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DE78999C-41A2-47A4-8116-B3406B58950C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DE78999C-41A2-47A4-8116-B3406B58950C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DE78999C-41A2-47A4-8116-B3406B58950C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DE78999C-41A2-47A4-8116-B3406B58950C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
