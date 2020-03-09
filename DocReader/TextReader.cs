@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 
 namespace DocReader
 {
@@ -13,7 +14,15 @@ namespace DocReader
 
         public string ReadAll()
         {
-            return File.ReadAllText(_file.FullName);
+            try
+            {
+                return File.ReadAllText(_file.FullName);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return _file.Extension == "" ? _file.Name : _file.Name.Replace(_file.Extension, "");
+            }
         }
     }
 }

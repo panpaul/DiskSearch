@@ -48,6 +48,11 @@ namespace Database
             _writer.UpdateDocument(new Term("Path", doc.Get("Path")), doc);
         }
 
+        public void Delete(string path)
+        {
+            _writer.DeleteDocuments(new Term("Path", path));
+        }
+
         public void Flush()
         {
             _writer.Flush(true, true);

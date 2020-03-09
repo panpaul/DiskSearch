@@ -6,12 +6,19 @@ namespace DiskSearch
     {
         private static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
-            var walker = new Walker("./index/");
-            walker.Walk("../../../../TestData/");
-            walker.Close();
-            var search = new Search("./index/");
-            search.Prompt();
+            var backend = new Backend("./index/");
+            AppDomain.CurrentDomain.ProcessExit += (s, e) => backend.Close();
+            if (args.Length != 1)
+            {
+                backend.Prompt();
+            }
+            else
+            {
+                Console.WriteLine("Indexing...");
+                backend.Walk(args[0]);
+                backend.Watch(args[0]);
+                backend.Prompt();
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using DocumentFormat.OpenXml.Packaging;
 
@@ -15,17 +16,25 @@ namespace DocReader
 
         public string ReadAll()
         {
-            var sb = new StringBuilder();
-            var presentation = PresentationDocument.Open(_file.FullName, false);
-            var presentationPart = presentation.PresentationPart;
-            foreach (var slidePart in presentationPart.SlideParts)
+            try
             {
-                sb.Append(slidePart.Slide.InnerText);
-                sb.Append(" ");
-            }
+                var sb = new StringBuilder();
+                var presentation = PresentationDocument.Open(_file.FullName, false);
+                var presentationPart = presentation.PresentationPart;
+                foreach (var slidePart in presentationPart.SlideParts)
+                {
+                    sb.Append(slidePart.Slide.InnerText);
+                    sb.Append(" ");
+                }
 
-            presentation.Close();
-            return sb.ToString();
+                presentation.Close();
+                return sb.ToString();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return _file.Extension == "" ? _file.Name : _file.Name.Replace(_file.Extension, "");
+            }
         }
     }
 }

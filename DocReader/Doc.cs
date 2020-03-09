@@ -27,7 +27,7 @@ namespace DocReader
                     reader = new PowerPointReader(file);
                     return reader.ReadAll();
                 default:
-                    return file.Name.Replace(file.Extension, "");
+                    return file.Extension == "" ? file.Name : file.Name.Replace(file.Extension, "");
             }
         }
     }

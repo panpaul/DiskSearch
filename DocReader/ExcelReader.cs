@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Linq;
 using System.Text;
 using DocumentFormat.OpenXml;
@@ -18,55 +19,63 @@ namespace DocReader
 
         public string ReadAll()
         {
-            var sb = new StringBuilder();
-            var ss = SpreadsheetDocument.Open(_file.FullName, false);
-
-            var wbPart = ss.WorkbookPart;
-            var stringTable = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
-
-            foreach (var workSheetPart in wbPart.WorksheetParts)
+            try
             {
-                var reader = OpenXmlReader.Create(workSheetPart);
-                while (reader.Read())
+                var sb = new StringBuilder();
+                var ss = SpreadsheetDocument.Open(_file.FullName, false);
+
+                var wbPart = ss.WorkbookPart;
+                var stringTable = wbPart.GetPartsOfType<SharedStringTablePart>().FirstOrDefault();
+
+                foreach (var workSheetPart in wbPart.WorksheetParts)
                 {
-                    if (reader.ElementType == typeof(Worksheet)) reader.ReadFirstChild();
-                    if (reader.ElementType != typeof(Row)) continue;
-
-                    var row = (Row) reader.LoadCurrentElement();
-                    foreach (var cell in row.Elements<Cell>())
+                    var reader = OpenXmlReader.Create(workSheetPart);
+                    while (reader.Read())
                     {
-                        if (cell.CellReference == null || !cell.CellReference.HasValue || cell.DataType == null)
-                            continue;
-                        var value = cell.InnerText;
-                        switch (cell.DataType.Value)
+                        if (reader.ElementType == typeof(Worksheet)) reader.ReadFirstChild();
+                        if (reader.ElementType != typeof(Row)) continue;
+
+                        var row = (Row) reader.LoadCurrentElement();
+                        foreach (var cell in row.Elements<Cell>())
                         {
-                            case CellValues.SharedString:
-                                if (stringTable != null)
-                                    value = stringTable.SharedStringTable.ElementAt(int.Parse(value)).InnerText;
-                                break;
-
-                            case CellValues.Boolean:
-                                value = value switch
-                                {
-                                    "0" => "FALSE",
-                                    _ => "TRUE"
-                                };
-                                break;
-                            case CellValues.Error:
+                            if (cell.CellReference == null || !cell.CellReference.HasValue || cell.DataType == null)
                                 continue;
-                        }
+                            var value = cell.InnerText;
+                            switch (cell.DataType.Value)
+                            {
+                                case CellValues.SharedString:
+                                    if (stringTable != null)
+                                        value = stringTable.SharedStringTable.ElementAt(int.Parse(value)).InnerText;
+                                    break;
 
-                        sb.Append(value);
-                        sb.Append(" ");
+                                case CellValues.Boolean:
+                                    value = value switch
+                                    {
+                                        "0" => "FALSE",
+                                        _ => "TRUE"
+                                    };
+                                    break;
+                                case CellValues.Error:
+                                    continue;
+                            }
+
+                            sb.Append(value);
+                            sb.Append(" ");
+                        }
                     }
+
+                    reader.Close();
                 }
 
-                reader.Close();
+
+                ss.Close();
+                return sb.ToString();
             }
-
-
-            ss.Close();
-            return sb.ToString();
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return _file.Extension == "" ? _file.Name : _file.Name.Replace(_file.Extension, "");
+            }
         }
     }
 }

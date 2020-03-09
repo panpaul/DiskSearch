@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Text;
 using DocumentFormat.OpenXml.Packaging;
 
@@ -15,12 +16,20 @@ namespace DocReader
 
         public string ReadAll()
         {
-            var wDoc = WordprocessingDocument.Open(_file.FullName, false);
-            var body = wDoc.MainDocumentPart.Document.Body;
-            var content = new StringBuilder();
-            foreach (var element in body.Elements()) content.Append(element.InnerText);
-            wDoc.Close();
-            return content.ToString();
+            try
+            {
+                var wDoc = WordprocessingDocument.Open(_file.FullName, false);
+                var body = wDoc.MainDocumentPart.Document.Body;
+                var content = new StringBuilder();
+                foreach (var element in body.Elements()) content.Append(element.InnerText);
+                wDoc.Close();
+                return content.ToString();
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return _file.Extension == "" ? _file.Name : _file.Name.Replace(_file.Extension, "");
+            }
         }
     }
 }

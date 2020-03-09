@@ -3,6 +3,11 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
+    <StartupObject>DiskSearch.Program</StartupObject>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <WarningLevel>3</WarningLevel>
   </PropertyGroup>
 
   <ItemGroup>

@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocReader", "DocReader\DocR
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocReader.Test", "DocReader.Test\DocReader.Test.csproj", "{A22C79A8-854E-4507-947D-D803F602411A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database.Test", "Database.Test\Database.Test.csproj", "{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Test", "Database.Test\Database.Test.csproj", "{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
