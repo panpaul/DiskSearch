@@ -5,6 +5,7 @@ using System.Text;
 using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
+using Sentry;
 
 namespace DocReader
 {
@@ -74,6 +75,7 @@ namespace DocReader
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                SentrySdk.CaptureException(e);
                 return _file.Extension == "" ? _file.Name : _file.Name.Replace(_file.Extension, "");
             }
         }

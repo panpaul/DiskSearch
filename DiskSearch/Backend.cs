@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Database;
 using DocReader;
+using Sentry;
 
 namespace DiskSearch
 {
@@ -83,7 +84,7 @@ namespace DiskSearch
                         var content = Doc.Read(fi);
                         var doc = Engine.GenerateDocument(fi.FullName, content);
                         _index.Add(doc);
-                        Console.WriteLine("Index Added: {0}: {1}", fi.FullName, fi.Length);
+                        Console.WriteLine("Index Added/Updated: {0}: {1}", fi.FullName, fi.Length);
                     }
                     catch (FileNotFoundException e)
                     {
@@ -115,6 +116,7 @@ namespace DiskSearch
             catch (Exception e)
             {
                 Console.WriteLine(e);
+                SentrySdk.CaptureException(e);
             }
         }
 
@@ -183,11 +185,11 @@ namespace DiskSearch
             {
                 Console.Write("Search for What ? >");
                 var word = Console.ReadLine();
-                if (word == null || word.Equals("QUIT"))
+                if (word == null || word.Equals("!QUIT"))
                 {
                     break;
                 }
-
+                Console.Clear();
                 Console.WriteLine("==== Searching for : " + word + " ====");
                 var schemes = _index.Search(word);
                 foreach (var scheme in schemes) Console.WriteLine(scheme.Path);

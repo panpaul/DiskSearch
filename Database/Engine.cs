@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using JiebaNet.Segmenter;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -6,6 +7,7 @@ using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
+using Sentry;
 
 namespace Database
 {
@@ -18,6 +20,7 @@ namespace Database
 
         public Engine(string indexLocation)
         {
+            SentrySdk.Init("https://e9bae2c6285e48ea814087d78c9a40f1@sentry.io/4202655");
             _directory = FSDirectory.Open(indexLocation);
             var indexConfig = new IndexWriterConfig(AppLuceneVersion, _analyzer);
             _writer = new IndexWriter(_directory, indexConfig);
@@ -45,12 +48,28 @@ namespace Database
 
         public void Add(Document doc)
         {
-            _writer.UpdateDocument(new Term("Path", doc.Get("Path")), doc);
+            try
+            {
+                _writer.UpdateDocument(new Term("Path", doc.Get("Path")), doc);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                SentrySdk.CaptureException(e);
+            }
         }
 
         public void Delete(string path)
         {
-            _writer.DeleteDocuments(new Term("Path", path));
+            try
+            {
+                _writer.DeleteDocuments(new Term("Path", path));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                SentrySdk.CaptureException(e);
+            }
         }
 
         public void Flush()
@@ -60,29 +79,38 @@ namespace Database
 
         public IEnumerable<Scheme> Search(string word)
         {
-            var queryPhrase = new QueryParser(AppLuceneVersion, "Content", _analyzer);
-
-            var query = queryPhrase.Parse(word);
-
-            var searcher = new IndexSearcher(_writer.GetReader(true));
-            var hits = searcher.Search(query, 50).ScoreDocs;
-
-            var results = new Scheme[hits.Length];
-
-            var i = 0;
-            foreach (var hit in hits)
+            try
             {
-                var foundDoc = searcher.Doc(hit.Doc);
-                var result = new Scheme
-                {
-                    Path = foundDoc.Get("Path"),
-                    Content = foundDoc.Get("Content")
-                };
-                results[i] = result;
-                i++;
-            }
+                var queryPhrase = new QueryParser(AppLuceneVersion, "Content", _analyzer);
 
-            return results;
+                var query = queryPhrase.Parse(word);
+
+                var searcher = new IndexSearcher(_writer.GetReader(true));
+                var hits = searcher.Search(query, 50).ScoreDocs;
+
+                var results = new Scheme[hits.Length];
+
+                var i = 0;
+                foreach (var hit in hits)
+                {
+                    var foundDoc = searcher.Doc(hit.Doc);
+                    var result = new Scheme
+                    {
+                        Path = foundDoc.Get("Path"),
+                        Content = foundDoc.Get("Content")
+                    };
+                    results[i] = result;
+                    i++;
+                }
+
+                return results;
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                SentrySdk.CaptureException(e);
+                return new Scheme[0];
+            }
         }
 
         public void Close()

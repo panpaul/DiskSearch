@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -9,6 +9,10 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <WarningLevel>3</WarningLevel>
   </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Sentry" Version="2.1.1" />
+  </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\Database\Database.csproj" />

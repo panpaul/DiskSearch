@@ -1,4 +1,6 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using Sentry;
 
 namespace DocReader
 {
@@ -7,8 +9,12 @@ namespace DocReader
         string ReadAll();
     }
 
-    public class Doc
+    public static class Doc
     {
+        static Doc()
+        {
+            SentrySdk.Init("https://e9bae2c6285e48ea814087d78c9a40f1@sentry.io/4202655");
+        }
         public static string Read(FileInfo file)
         {
             IReader reader;
