@@ -5,8 +5,12 @@
 
  jobs:
    build:
-     executor: win/default     
-    
+     executor: win/default
      steps:
        - checkout
        - run: dotnet build
+   test:
+     executor: win/default
+     steps:
+       - checkout
+       - run: dotnet test
