@@ -9,10 +9,12 @@ namespace DiskSearch
 {
     internal class Backend
     {
+        private readonly Blacklist _blacklist;
         private readonly Engine _index;
 
         public Backend(string path)
         {
+            _blacklist = new Blacklist();
             _index = new Engine(path);
         }
 
@@ -49,12 +51,7 @@ namespace DiskSearch
                 {
                     subDirs = Directory.GetDirectories(currentDir);
                 }
-                catch (UnauthorizedAccessException e)
-                {
-                    Console.WriteLine(e.Message);
-                    continue;
-                }
-                catch (DirectoryNotFoundException e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     continue;
@@ -65,13 +62,7 @@ namespace DiskSearch
                 {
                     files = Directory.GetFiles(currentDir);
                 }
-                catch (UnauthorizedAccessException e)
-                {
-                    Console.WriteLine(e.Message);
-                    continue;
-                }
-
-                catch (DirectoryNotFoundException e)
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message);
                     continue;
@@ -80,13 +71,14 @@ namespace DiskSearch
                 foreach (var file in files)
                     try
                     {
+                        if (_blacklist.Judge(file)) continue;
                         var fi = new FileInfo(file);
                         var content = Doc.Read(fi);
                         var doc = Engine.GenerateDocument(fi.FullName, content);
                         _index.Add(doc);
                         Console.WriteLine("Index Added/Updated: {0}: {1}", fi.FullName, fi.Length);
                     }
-                    catch (FileNotFoundException e)
+                    catch (Exception e)
                     {
                         Console.WriteLine(e.Message);
                     }
@@ -126,7 +118,7 @@ namespace DiskSearch
             {
                 _index.Delete(e.OldFullPath);
                 Console.WriteLine("\nIndex Deleted: {0}", e.FullPath);
-
+                if (_blacklist.Judge(e.FullPath)) return;
                 var fi = new FileInfo(e.FullPath);
                 var content = Doc.Read(fi);
                 var doc = Engine.GenerateDocument(fi.FullName, content);
@@ -146,11 +138,14 @@ namespace DiskSearch
                 switch (e.ChangeType)
                 {
                     case WatcherChangeTypes.Deleted:
+                    {
                         _index.Delete(e.FullPath);
                         Console.WriteLine("\nIndex Deleted: {0}", e.FullPath);
-                        return;
+                        break;
+                    }
                     case WatcherChangeTypes.Changed:
                     {
+                        if (_blacklist.Judge(e.FullPath)) break;
                         var fi = new FileInfo(e.FullPath);
                         var content = Doc.Read(fi);
                         var doc = Engine.GenerateDocument(fi.FullName, content);
@@ -160,6 +155,7 @@ namespace DiskSearch
                     }
                     case WatcherChangeTypes.Created:
                     {
+                        if (_blacklist.Judge(e.FullPath)) break;
                         var fi = new FileInfo(e.FullPath);
                         var content = Doc.Read(fi);
                         var doc = Engine.GenerateDocument(fi.FullName, content);
@@ -176,7 +172,6 @@ namespace DiskSearch
             {
                 Console.WriteLine(exception);
             }
-            
         }
 
         public void Prompt()
@@ -185,10 +180,7 @@ namespace DiskSearch
             {
                 Console.Write("Search for What ? >");
                 var word = Console.ReadLine();
-                if (word == null || word.Equals("!QUIT"))
-                {
-                    break;
-                }
+                if (word == null || word.Equals("!QUIT")) break;
                 Console.Clear();
                 Console.WriteLine("==== Searching for : " + word + " ====");
                 var schemes = _index.Search(word);

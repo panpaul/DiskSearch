@@ -19,4 +19,10 @@
     <ProjectReference Include="..\DocReader\DocReader.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="blacklist.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
