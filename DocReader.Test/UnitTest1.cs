@@ -59,7 +59,7 @@ namespace DocReader.Test
         [Test]
         public void DocReadNone_Test()
         {
-            const string strExpected = "test1";
+            const string strExpected = "test1 test";
             var strActual = Doc.Read(new FileInfo("test1.test"));
             Assert.AreEqual(strExpected, strActual);
         }

@@ -18,6 +18,8 @@ namespace DiskSearch
             {
                 Console.WriteLine("Indexing...");
                 backend.Walk(args[0]);
+                GC.Collect();
+                GC.WaitForPendingFinalizers();
                 backend.Watch(args[0]);
                 backend.Prompt();
             }
