@@ -9,15 +9,3 @@
      steps:
        - checkout
        - run: dotnet build
-   test:
-     executor: win/default
-     steps:
-       - checkout
-       - run: dotnet test
-       
- workflows:
-   version: 2
-   build_and_test:
-     jobs:
-       - build
-       - test

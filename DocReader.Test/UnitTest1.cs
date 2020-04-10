@@ -17,18 +17,16 @@ namespace DocReader.Test
         public void DocReadWord_Test(string testCase)
         {
             var file = new FileInfo("../../../../TestData/word" + testCase + ".docx");
+            
             var strActual = Doc.Read(file);
-            var strExpected = "测试文档" + testCase + "测试文档 CE SHI WEN DANG CE SHI WEN DANG CSWD CSWD";
-            if (testCase.Contains("valid"))
-            {
-                strExpected = "not_a_valid_docx";
-                strActual = strActual.Replace(" ", "");
-            }
+            var strExpected = "测试文档" + testCase + "测试文档";
+            if (testCase.Contains("valid")) strExpected = "not_a_valid_docx";
+            Assert.IsTrue(strActual.Contains(strExpected));
 
-            if (strActual.Contains(strExpected))
-                Assert.Pass();
-            else
-                Assert.Fail();
+            strActual = Doc.GetPinyin(strActual);
+            strExpected = "CE SHI WEN DANG CE SHI WEN DANG CSWD CSWD";
+            if (testCase.Contains("valid")) strExpected = " ";
+            Assert.IsTrue(strActual.Contains(strExpected));
         }
 
         [TestCase("../../../../TestData/pp1.pptx")]
@@ -36,14 +34,16 @@ namespace DocReader.Test
         public void DocReadPowerPoint_Test(string testCase)
         {
             var file = new FileInfo(testCase);
-            var strActual = Doc.Read(file);
-            var strExpected = "中文测试 Helloworld 数据 ZHONG WEN CE SHI SHU JU ZWCS SJ ";
-            if (testCase.Contains("valid")) strExpected = "not_a_valid_pptx ";
 
-            if (strActual.Contains(strExpected))
-                Assert.Pass();
-            else
-                Assert.Fail();
+            var strActual = Doc.Read(file);
+            var strExpected = "中文测试 Helloworld 数据";
+            if (testCase.Contains("valid")) strExpected = "not_a_valid_pptx";
+            Assert.IsTrue(strActual.Contains(strExpected));
+
+            strActual = Doc.GetPinyin(strActual);
+            strExpected = " ZHONG WEN CE SHI SHU JU ZWCS SJ ";
+            if (testCase.Contains("valid")) strExpected = " ";
+            Assert.IsTrue(strActual.Contains(strExpected));
         }
 
         [TestCase("../../../../TestData/txt.txt")]
@@ -51,14 +51,16 @@ namespace DocReader.Test
         public void DocReadTxt_Test(string testCase)
         {
             var file = new FileInfo(testCase);
-            var strExpected = "Hello world! 你好世界！ NI HAO SHI JIE NHSJ ";
-            if (!file.Exists) strExpected = "not_existed ";
-            var strActual = Doc.Read(file);
 
-            if (strActual.Contains(strExpected))
-                Assert.Pass();
-            else
-                Assert.Fail();
+            var strExpected = "Hello world! 你好世界！";
+            if (!file.Exists) strExpected = "not_existed";
+            var strActual = Doc.Read(file);
+            Assert.IsTrue(strActual.Contains(strExpected));
+
+            strActual = Doc.GetPinyin(strActual);
+            strExpected = " NI HAO SHI JIE NHSJ ";
+            if (testCase.Contains("not")) strExpected = " ";
+            Assert.IsTrue(strActual.Contains(strExpected));
         }
 
         [TestCase("../../../../TestData/ss1.xlsx")]
@@ -66,27 +68,26 @@ namespace DocReader.Test
         public void DocReadExcel_Test(string testCase)
         {
             var file = new FileInfo(testCase);
+
             var strActual = Doc.Read(file);
             var strExpected =
-                "Sheet3 有 布尔 值 TRUE Sheet2 也 有 数据 测试 文档 这儿 有 数据 YOU BU ER ZHI YE YOU SHU JU CE SHI WEN DANG ZHEI ER YOU SHU JU Y BE Z Y Y SJ CS WD ZE Y SJ ";
-            if (testCase.Contains("valid")) strExpected = "not_a_valid_xlsx ";
+                "Sheet3 有 布尔 值 TRUE Sheet2 也 有 数据 测试 文档 这儿 有 数据";
+            if (testCase.Contains("valid")) strExpected = "not_a_valid_xlsx";
+            Assert.IsTrue(strActual.Contains(strExpected));
 
-            if (strActual.Contains(strExpected))
-                Assert.Pass();
-            else
-                Assert.Fail();
+            strActual = Doc.GetPinyin(strActual);
+            strExpected = " YOU BU ER ZHI YE YOU SHU JU CE SHI WEN DANG ZHEI ER YOU SHU JU Y BE Z Y Y SJ CS WD ZE Y SJ ";
+            if (testCase.Contains("valid")) strExpected = " ";
+            Assert.IsTrue(strActual.Contains(strExpected));
         }
 
         [Test]
         public void DocReadNone_Test()
         {
-            const string strExpected = "test1 test ";
+            const string strExpected = "test1 test";
             var strActual = Doc.Read(new FileInfo("test1.test"));
 
-            if (strActual.Contains(strExpected))
-                Assert.Pass();
-            else
-                Assert.Fail();
+            Assert.IsTrue(strActual.Contains(strExpected));
         }
     }
 }

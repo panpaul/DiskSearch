@@ -18,26 +18,36 @@ namespace Database.Test
         [Test]
         public void Scheme_Add_Search_Test()
         {
-            var doc = Engine.GenerateDocument("path", "content");
+            var doc = Engine.GenerateDocument("path", "content", "pinyin");
             _index.Add(doc);
             for (var i = 0; i < 100; i++)
-                _index.Add(Engine.GenerateDocument(GenerateRandomString(10),
-                    "Index Query: " + i + GenerateRandomString(100)));
+                _index.Add(
+                    Engine.GenerateDocument(
+                        GenerateRandomString(10),
+                        "Index Query: " + i + GenerateRandomString(100),
+                        "pinyin " + GenerateRandomString(100)
+                    )
+                );
 
             for (var i = 0; i < 100; i++)
                 _index.Add(Engine.GenerateDocument(new Engine.Scheme
-                    {
-                        Content = "Index Query: " + i + GenerateRandomString(100),
-                        Path = GenerateRandomString(10)
-                    }
-                ));
+                        {
+                            Content = "Index Query: " + i + GenerateRandomString(100),
+                            Path = GenerateRandomString(10),
+                            Pinyin = GenerateRandomString(10)
+                        }
+                    )
+                );
 
             _index.Flush();
 
-            var result = _index.Search("index");
+            var resultIndex = _index.Search("index");
+            var resultPinyin = _index.Search("pinyin");
 
             _index.Close();
-            Assert.AreEqual(50, result.Count());
+
+            Assert.AreEqual(50, resultIndex.Count());
+            Assert.AreEqual(50, resultPinyin.Count());
         }
 
         private static string GenerateRandomString(int length)

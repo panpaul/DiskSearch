@@ -74,7 +74,8 @@ namespace DiskSearch
                         if (_blacklist.Judge(file)) continue;
                         var fi = new FileInfo(file);
                         var content = Doc.Read(fi);
-                        var doc = Engine.GenerateDocument(fi.FullName, content);
+                        var pinyin = Doc.GetPinyin(content);
+                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
                         _index.Add(doc);
                         Console.WriteLine("Index Added/Updated: {0}: {1}", fi.FullName, fi.Length);
                     }
@@ -121,7 +122,8 @@ namespace DiskSearch
                 if (_blacklist.Judge(e.FullPath)) return;
                 var fi = new FileInfo(e.FullPath);
                 var content = Doc.Read(fi);
-                var doc = Engine.GenerateDocument(fi.FullName, content);
+                var pinyin = Doc.GetPinyin(content);
+                var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
                 _index.Add(doc);
                 Console.WriteLine("\nIndex Added: {0}: {1}", fi.FullName, fi.Length);
             }
@@ -148,7 +150,8 @@ namespace DiskSearch
                         if (_blacklist.Judge(e.FullPath)) break;
                         var fi = new FileInfo(e.FullPath);
                         var content = Doc.Read(fi);
-                        var doc = Engine.GenerateDocument(fi.FullName, content);
+                        var pinyin = Doc.GetPinyin(content);
+                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
                         _index.Add(doc);
                         Console.WriteLine("\nIndex Updated: {0}: {1}", fi.FullName, fi.Length);
                         return;
@@ -158,7 +161,8 @@ namespace DiskSearch
                         if (_blacklist.Judge(e.FullPath)) break;
                         var fi = new FileInfo(e.FullPath);
                         var content = Doc.Read(fi);
-                        var doc = Engine.GenerateDocument(fi.FullName, content);
+                        var pinyin = Doc.GetPinyin(content);
+                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
                         _index.Add(doc);
                         Console.WriteLine("\nIndex Added: {0}: {1}", fi.FullName, fi.Length);
                         break;
@@ -184,7 +188,9 @@ namespace DiskSearch
                 Console.Clear();
                 Console.WriteLine("==== Searching for : " + word + " ====");
                 var schemes = _index.Search(word);
-                foreach (var scheme in schemes) Console.WriteLine(scheme.Path);
+                foreach (var scheme in schemes)
+                    Console.WriteLine(scheme.Path);
+                //Console.WriteLine(scheme.Content);
                 Console.WriteLine("==== End Search ====");
             }
         }

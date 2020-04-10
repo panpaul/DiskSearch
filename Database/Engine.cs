@@ -26,12 +26,13 @@ namespace Database
             _writer = new IndexWriter(_directory, indexConfig);
         }
 
-        public static Document GenerateDocument(string path, string content)
+        public static Document GenerateDocument(string path, string content, string pinyin)
         {
             var doc = new Document
             {
                 new StringField("Path", path, Field.Store.YES),
-                new TextField("Content", content, Field.Store.YES)
+                new TextField("Content", content, Field.Store.YES),
+                new TextField("Pinyin", pinyin, Field.Store.YES)
             };
             return doc;
         }
@@ -41,7 +42,8 @@ namespace Database
             var doc = new Document
             {
                 new StringField("Path", s.Path, Field.Store.YES),
-                new TextField("Content", s.Content, Field.Store.YES)
+                new TextField("Content", s.Content, Field.Store.YES),
+                new TextField("Pinyin", s.Pinyin, Field.Store.YES)
             };
             return doc;
         }
@@ -81,7 +83,7 @@ namespace Database
         {
             try
             {
-                var queryPhrase = new QueryParser(AppLuceneVersion, "Content", _analyzer);
+                var queryPhrase = new MultiFieldQueryParser(AppLuceneVersion, new[] {"Content", "Pinyin"}, _analyzer);
 
                 var query = queryPhrase.Parse(word);
 
@@ -97,7 +99,8 @@ namespace Database
                     var result = new Scheme
                     {
                         Path = foundDoc.Get("Path"),
-                        Content = foundDoc.Get("Content")
+                        Content = foundDoc.Get("Content"),
+                        Pinyin = foundDoc.Get("Pinyin")
                     };
                     results[i] = result;
                     i++;
@@ -130,6 +133,7 @@ namespace Database
         {
             public string Path;
             public string Content;
+            public string Pinyin;
         }
     }
 }

@@ -15,6 +15,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Test", "Database.T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyPinyin", "TinyPinyin\TinyPinyin.csproj", "{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskSearch.Web", "DiskSearch.Web\DiskSearch.Web.csproj", "{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
