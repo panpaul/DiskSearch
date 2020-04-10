@@ -68,7 +68,6 @@ namespace DocReader
                     reader.Close();
                 }
 
-
                 ss.Close();
                 return sb.ToString();
             }
