@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DocReader
+﻿namespace DocReader
 {
-    class PdfReader
+    internal class PdfReader
     {
     }
 }

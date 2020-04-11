@@ -189,7 +189,9 @@ namespace DiskSearch
                 Console.WriteLine("==== Searching for : " + word + " ====");
                 var schemes = _index.Search(word);
                 foreach (var scheme in schemes)
+                {
                     Console.WriteLine(scheme.Path);
+                }
                 //Console.WriteLine(scheme.Content);
                 Console.WriteLine("==== End Search ====");
             }

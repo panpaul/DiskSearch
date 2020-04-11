@@ -17,7 +17,7 @@ namespace DocReader.Test
         public void DocReadWord_Test(string testCase)
         {
             var file = new FileInfo("../../../../TestData/word" + testCase + ".docx");
-            
+
             var strActual = Doc.Read(file);
             var strExpected = "≤‚ ‘Œƒµµ" + testCase + "≤‚ ‘Œƒµµ";
             if (testCase.Contains("valid")) strExpected = "not_a_valid_docx";
@@ -76,7 +76,8 @@ namespace DocReader.Test
             Assert.IsTrue(strActual.Contains(strExpected));
 
             strActual = Doc.GetPinyin(strActual);
-            strExpected = " YOU BU ER ZHI YE YOU SHU JU CE SHI WEN DANG ZHEI ER YOU SHU JU Y BE Z Y Y SJ CS WD ZE Y SJ ";
+            strExpected =
+                " YOU BU ER ZHI YE YOU SHU JU CE SHI WEN DANG ZHEI ER YOU SHU JU Y BE Z Y Y SJ CS WD ZE Y SJ ";
             if (testCase.Contains("valid")) strExpected = " ";
             Assert.IsTrue(strActual.Contains(strExpected));
         }

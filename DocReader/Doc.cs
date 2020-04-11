@@ -21,7 +21,9 @@ namespace DocReader
 
         private static string CleanUpSpaces(string str)
         {
-            return Regex.Replace(str, @"\s+", " ");
+            str = str.Replace("_", " ");
+            str = Regex.Replace(str, @"\s+", " ");
+            return str;
         }
 
         public static string GetPinyin(string str)
