@@ -7,15 +7,24 @@ using Sentry;
 
 namespace DiskSearch
 {
-    internal class Backend
+    public class Backend
     {
         private readonly Blacklist _blacklist;
         private readonly Engine _index;
+        private bool _init;
 
         public Backend(string path)
         {
-            _blacklist = new Blacklist();
-            _index = new Engine(path);
+            try
+            {
+                _blacklist = new Blacklist(Path.Combine(path,"blacklist.json"));
+                _index = new Engine(Path.Combine(path,"index"));
+                _init = true;
+            }
+            catch
+            {
+                _init = false;
+            }
         }
 
         public void Close()
@@ -27,7 +36,10 @@ namespace DiskSearch
         {
             try
             {
+                // disallow querying while walking
+                _init = false;
                 WalkDir(path);
+                _init = true;
             }
             catch (Exception e)
             {
@@ -188,13 +200,15 @@ namespace DiskSearch
                 Console.Clear();
                 Console.WriteLine("==== Searching for : " + word + " ====");
                 var schemes = _index.Search(word);
-                foreach (var scheme in schemes)
-                {
-                    Console.WriteLine(scheme.Path);
-                }
+                foreach (var scheme in schemes) Console.WriteLine(scheme.Path);
                 //Console.WriteLine(scheme.Content);
                 Console.WriteLine("==== End Search ====");
             }
+        }
+
+        public IEnumerable<Engine.Scheme> Search(string word)
+        {
+            return _init ? _index.Search(word) : null;
         }
     }
 }

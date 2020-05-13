@@ -13,9 +13,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocReader.Test", "DocReader
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Test", "Database.Test\Database.Test.csproj", "{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TinyPinyin", "TinyPinyin\TinyPinyin.csproj", "{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyPinyin", "TinyPinyin\TinyPinyin.csproj", "{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskSearch.Web", "DiskSearch.Web\DiskSearch.Web.csproj", "{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskSearch.GUI", "DiskSearch.GUI\DiskSearch.GUI.csproj", "{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,10 +47,10 @@ Global
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Release|Any CPU.Build.0 = Release|Any CPU
-		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{49A11A65-0A6A-4D3F-9EFA-10E06579A1F5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

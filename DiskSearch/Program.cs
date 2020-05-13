@@ -8,7 +8,7 @@ namespace DiskSearch
         private static void Main(string[] args)
         {
             SentrySdk.Init("https://e9bae2c6285e48ea814087d78c9a40f1@sentry.io/4202655");
-            var backend = new Backend("./index/");
+            var backend = new Backend("./");
             AppDomain.CurrentDomain.ProcessExit += (s, e) => backend.Close();
             if (args.Length != 1)
             {

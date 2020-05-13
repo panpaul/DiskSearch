@@ -10,11 +10,22 @@ namespace DiskSearch
     {
         private readonly List<string> _list;
 
-        public Blacklist()
+        public Blacklist(string blacklistPath)
         {
             try
             {
-                var jsonString = File.ReadAllText("./blacklist.json");
+                string jsonString;
+                if (File.Exists(blacklistPath))
+                    jsonString = File.ReadAllText(blacklistPath);
+                else
+                    jsonString =
+                        File.ReadAllText(
+                            Path.Combine(
+                                AppDomain.CurrentDomain.BaseDirectory ?? ".",
+                                "blacklist.json"
+                            )
+                        );
+
                 _list = JsonSerializer.Deserialize<List<string>>(jsonString);
             }
             catch (Exception e)
