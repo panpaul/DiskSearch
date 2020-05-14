@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Test", "Database.T
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyPinyin", "TinyPinyin\TinyPinyin.csproj", "{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskSearch.GUI", "DiskSearch.GUI\DiskSearch.GUI.csproj", "{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiskSearch.GUI", "DiskSearch.GUI\DiskSearch.GUI.csproj", "{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MachineCode", "MachineCode\MachineCode.csproj", "{3EF51C56-668F-48F7-809C-F341ABB9E811}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -51,6 +53,10 @@ Global
 		{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3EF51C56-668F-48F7-809C-F341ABB9E811}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3EF51C56-668F-48F7-809C-F341ABB9E811}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3EF51C56-668F-48F7-809C-F341ABB9E811}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3EF51C56-668F-48F7-809C-F341ABB9E811}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

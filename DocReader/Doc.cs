@@ -3,6 +3,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using MimeTypes;
 using Sentry;
+using Sentry.Protocol;
 using TinyPinyin;
 
 namespace DocReader
@@ -17,6 +18,13 @@ namespace DocReader
         static Doc()
         {
             SentrySdk.Init("https://e9bae2c6285e48ea814087d78c9a40f1@sentry.io/4202655");
+            SentrySdk.ConfigureScope(scope =>
+            {
+                scope.User = new User
+                {
+                    Id = MachineCode.MachineCode.GetMachineCode()
+                };
+            });
         }
 
         private static string CleanUpSpaces(string str)

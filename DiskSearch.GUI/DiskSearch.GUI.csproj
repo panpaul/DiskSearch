@@ -4,6 +4,11 @@
     <OutputType>WinExe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UseWPF>true</UseWPF>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <AssemblyVersion>1.0.1.1</AssemblyVersion>
+    <FileVersion>1.0.1.1</FileVersion>
+    <Version>1.0.1</Version>
+    <Authors>Paul</Authors>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +17,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DiskSearch\DiskSearch.csproj" />
+    <ProjectReference Include="..\MachineCode\MachineCode.csproj" />
   </ItemGroup>
 
 </Project>

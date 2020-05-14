@@ -6,6 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using Database;
 using Sentry;
+using Sentry.Protocol;
 
 namespace DiskSearch.GUI
 {
@@ -22,6 +23,13 @@ namespace DiskSearch.GUI
         public MainWindow()
         {
             SentrySdk.Init("https://e9bae2c6285e48ea814087d78c9a40f1@sentry.io/4202655");
+            SentrySdk.ConfigureScope(scope =>
+            {
+                scope.User = new User
+                {
+                    Id = MachineCode.MachineCode.GetMachineCode()
+                };
+            });
 
             InitializeComponent();
 
@@ -52,10 +60,7 @@ namespace DiskSearch.GUI
             SearchKeyword.IsEnabled = false;
             RefreshIndex.Content = "Refreshing...";
             RefreshIndex.IsEnabled = false;
-            await Task.Run(() =>
-            {
-                _backend.Walk(_config.SearchPath);
-            });
+            await Task.Run(() => { _backend.Walk(_config.SearchPath); });
 
             SearchKeyword.IsEnabled = true;
             RefreshIndex.Content = "Refresh Index";
