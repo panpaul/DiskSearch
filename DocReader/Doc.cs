@@ -49,7 +49,8 @@ namespace DocReader
             var pathContent = file.FullName.Replace(".", " ").Replace("\\", " ").Replace("/", " ").Replace(":", " ") +
                               " ";
             var fileType = MimeTypeMap.GetMimeType(file.Extension);
-            if (fileType.StartsWith("text/"))
+            // currently a stupid method to support markdown
+            if (fileType.StartsWith("text/") || file.Extension == ".md")
             {
                 reader = new TextReader(file);
                 return CleanUpSpaces(pathContent + reader.ReadAll());

@@ -9,16 +9,21 @@ namespace DiskSearch
 {
     public class Backend
     {
-        private readonly Blacklist _blacklist;
-        private readonly Engine _index;
+        private Blacklist _blacklist;
+        private Engine _index;
         private bool _init;
 
         public Backend(string path)
         {
+            Setup(path);
+        }
+
+        public void Setup(string path)
+        {
             try
             {
-                _blacklist = new Blacklist(Path.Combine(path,"blacklist.json"));
-                _index = new Engine(Path.Combine(path,"index"));
+                _blacklist = new Blacklist(Path.Combine(path, "blacklist.json"));
+                _index = new Engine(Path.Combine(path, "index"));
                 _init = true;
             }
             catch
@@ -29,6 +34,7 @@ namespace DiskSearch
 
         public void Close()
         {
+            _init = false;
             _index.Close();
         }
 
@@ -127,6 +133,7 @@ namespace DiskSearch
 
         private void RenameHandler(object source, RenamedEventArgs e)
         {
+            if (!_init) return;
             try
             {
                 _index.Delete(e.OldFullPath);
@@ -147,6 +154,7 @@ namespace DiskSearch
 
         private void Handler(object source, FileSystemEventArgs e)
         {
+            if (!_init) return;
             try
             {
                 switch (e.ChangeType)

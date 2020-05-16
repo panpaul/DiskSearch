@@ -10,9 +10,6 @@ using Sentry.Protocol;
 
 namespace DiskSearch.GUI
 {
-    /// <summary>
-    ///     Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
         private readonly string _basePath;
@@ -72,6 +69,24 @@ namespace DiskSearch.GUI
             var schemes = _backend.Search(SearchKeyword.Text);
             _resultList.Clear();
             foreach (var scheme in schemes) _resultList.Add(new Results(scheme));
+        }
+
+        private async void RebuildIndex_Click(object sender, RoutedEventArgs e)
+        {
+            SearchKeyword.IsEnabled = false;
+            RebuildIndex.Content = "Refreshing...";
+            RebuildIndex.IsEnabled = false;
+            RefreshIndex.IsEnabled = false;
+
+            _backend.Close();
+            Directory.Delete(Path.Combine(_basePath, "index"), true);
+            _backend.Setup(_basePath);
+            await Task.Run(() => { _backend.Walk(_config.SearchPath); });
+
+            SearchKeyword.IsEnabled = true;
+            RebuildIndex.Content = "Rebuild Index";
+            RebuildIndex.IsEnabled = true;
+            RefreshIndex.IsEnabled = true;
         }
     }
 
