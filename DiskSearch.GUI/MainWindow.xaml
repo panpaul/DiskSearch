@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DiskSearch.GUI"
         mc:Ignorable="d"
-        Title="DiskSearch" Height="450" Width="800" MinHeight="250" MinWidth="300">
+        Title="DiskSearch" Height="450" Width="800" MinHeight="250" MinWidth="480">
     <Grid>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="9*"/>
@@ -28,6 +28,8 @@
         <Label x:Name="TipLabel" Content="Type to search:" HorizontalAlignment="Left" Margin="25,5,0,0" VerticalAlignment="Top"/>
         <Button x:Name="RebuildIndex" Content="Rebuild Index" HorizontalAlignment="Left" Margin="120,0,0,30"
             VerticalAlignment="Bottom" Click="RebuildIndex_Click" />
+        <Button x:Name="Config" Content="Config" HorizontalAlignment="Left" Margin="215,0,0,30"
+            VerticalAlignment="Bottom" Click="Config_Click" />
 
     </Grid>
 </Window>

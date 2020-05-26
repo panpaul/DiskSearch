@@ -54,14 +54,13 @@ namespace DiskSearch.GUI
 
         private async void RefreshIndex_Click(object sender, RoutedEventArgs e)
         {
-            SearchKeyword.IsEnabled = false;
+            BlockInput();
             RefreshIndex.Content = "Refreshing...";
-            RefreshIndex.IsEnabled = false;
+
             await Task.Run(() => { _backend.Walk(_config.SearchPath); });
 
-            SearchKeyword.IsEnabled = true;
+            RestoreInput();
             RefreshIndex.Content = "Refresh Index";
-            RefreshIndex.IsEnabled = true;
         }
 
         private void SearchKeyword_TextChanged(object sender, TextChangedEventArgs e)
@@ -73,20 +72,47 @@ namespace DiskSearch.GUI
 
         private async void RebuildIndex_Click(object sender, RoutedEventArgs e)
         {
-            SearchKeyword.IsEnabled = false;
-            RebuildIndex.Content = "Refreshing...";
-            RebuildIndex.IsEnabled = false;
-            RefreshIndex.IsEnabled = false;
+            RebuildIndex.Content = "Rebuilding...";
+            BlockInput();
 
             _backend.Close();
             Directory.Delete(Path.Combine(_basePath, "index"), true);
             _backend.Setup(_basePath);
             await Task.Run(() => { _backend.Walk(_config.SearchPath); });
 
-            SearchKeyword.IsEnabled = true;
             RebuildIndex.Content = "Rebuild Index";
-            RebuildIndex.IsEnabled = true;
+            RestoreInput();
+        }
+
+        private void Config_Click(object sender, RoutedEventArgs e)
+        {
+            var configWindow = new ConfigWindow
+            {
+                Owner = this,
+                WindowStartupLocation = WindowStartupLocation.CenterOwner
+            };
+            configWindow.ShowDialog();
+
+            var oldPath = _config.SearchPath;
+            _config.Read();
+            if (oldPath != _config.SearchPath)
+                RebuildIndex_Click(sender, e);
+        }
+
+        private void BlockInput()
+        {
+            SearchKeyword.IsEnabled = false;
+            RefreshIndex.IsEnabled = false;
+            RebuildIndex.IsEnabled = false;
+            Config.IsEnabled = false;
+        }
+
+        private void RestoreInput()
+        {
+            SearchKeyword.IsEnabled = true;
             RefreshIndex.IsEnabled = true;
+            RebuildIndex.IsEnabled = true;
+            Config.IsEnabled = true;
         }
     }
 

@@ -6,6 +6,8 @@ namespace DiskSearch.GUI
 {
     internal class Config
     {
+        private readonly string _configPath;
+
         public Config()
         {
         }
@@ -14,20 +16,15 @@ namespace DiskSearch.GUI
         {
             try
             {
-                string jsonString;
                 if (File.Exists(configPath))
-                    jsonString = File.ReadAllText(configPath);
+                    _configPath = configPath;
                 else
-                    jsonString =
-                        File.ReadAllText(
-                            Path.Combine(
-                                AppDomain.CurrentDomain.BaseDirectory ?? ".",
-                                "config.json"
-                            )
-                        );
-
-                var config = JsonSerializer.Deserialize<Config>(jsonString);
-                SearchPath = config.SearchPath;
+                    _configPath = Path.Combine(
+                        AppDomain.CurrentDomain.BaseDirectory ?? ".",
+                        "config.json"
+                    );
+                Read();
+                
             }
             catch (Exception e)
             {
@@ -36,5 +33,25 @@ namespace DiskSearch.GUI
         }
 
         public string SearchPath { get; set; }
+
+        public void Save()
+        {
+            try
+            {
+                var jsonString = JsonSerializer.Serialize(this);
+                File.WriteAllText(_configPath, jsonString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void Read()
+        {
+            var jsonString = File.ReadAllText(_configPath);
+            var config = JsonSerializer.Deserialize<Config>(jsonString);
+            SearchPath = config.SearchPath;
+        }
     }
 }
