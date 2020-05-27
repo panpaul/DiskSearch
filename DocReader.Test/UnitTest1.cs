@@ -20,7 +20,7 @@ namespace DocReader.Test
 
             var strActual = Doc.Read(file);
             var strExpected = "测试文档" + testCase + "测试文档";
-            if (testCase.Contains("valid")) strExpected = "not_a_valid_docx";
+            if (testCase.Contains("valid")) strExpected = "not a valid";
             Assert.IsTrue(strActual.Contains(strExpected));
 
             strActual = Doc.GetPinyin(strActual);
@@ -37,7 +37,7 @@ namespace DocReader.Test
 
             var strActual = Doc.Read(file);
             var strExpected = "中文测试 Helloworld 数据";
-            if (testCase.Contains("valid")) strExpected = "not_a_valid_pptx";
+            if (testCase.Contains("valid")) strExpected = "not a valid";
             Assert.IsTrue(strActual.Contains(strExpected));
 
             strActual = Doc.GetPinyin(strActual);
@@ -53,7 +53,7 @@ namespace DocReader.Test
             var file = new FileInfo(testCase);
 
             var strExpected = "Hello world! 你好世界！";
-            if (!file.Exists) strExpected = "not_existed";
+            if (!file.Exists) strExpected = "not";
             var strActual = Doc.Read(file);
             Assert.IsTrue(strActual.Contains(strExpected));
 
@@ -72,7 +72,7 @@ namespace DocReader.Test
             var strActual = Doc.Read(file);
             var strExpected =
                 "Sheet3 有 布尔 值 TRUE Sheet2 也 有 数据 测试 文档 这儿 有 数据";
-            if (testCase.Contains("valid")) strExpected = "not_a_valid_xlsx";
+            if (testCase.Contains("valid")) strExpected = "not a valid xlsx";
             Assert.IsTrue(strActual.Contains(strExpected));
 
             strActual = Doc.GetPinyin(strActual);
