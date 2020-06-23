@@ -46,8 +46,10 @@ namespace DocReader
         public static string Read(FileInfo file)
         {
             IReader reader;
-            var pathContent = file.FullName.Replace(".", " ").Replace("\\", " ").Replace("/", " ").Replace(":", " ") +
-                              " ";
+            var pathContent = file.FullName
+                .Replace(".", " ").Replace("\\", " ").Replace("/", " ").Replace(":", " ") + " ";
+            
+            // TODO: self make
             var fileType = MimeTypeMap.GetMimeType(file.Extension);
             // currently a stupid method to support markdown
             if (fileType.StartsWith("text/") || file.Extension == ".md")
@@ -74,6 +76,7 @@ namespace DocReader
                 return CleanUpSpaces(pathContent + reader.ReadAll());
             }
 
+            // TODO add Image Reader
             return CleanUpSpaces(pathContent);
         }
     }

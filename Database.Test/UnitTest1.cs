@@ -18,14 +18,15 @@ namespace Database.Test
         [Test]
         public void Scheme_Add_Search_Test()
         {
-            var doc = Engine.GenerateDocument("path", "content", "pinyin");
+            var doc = Engine.GenerateDocument("path", "content", "pinyin","");
             _index.Add(doc);
             for (var i = 0; i < 100; i++)
                 _index.Add(
                     Engine.GenerateDocument(
                         GenerateRandomString(10),
                         "Index Query: " + i + GenerateRandomString(100),
-                        "pinyin " + GenerateRandomString(100)
+                        "pinyin " + GenerateRandomString(100),
+                        ""
                     )
                 );
 

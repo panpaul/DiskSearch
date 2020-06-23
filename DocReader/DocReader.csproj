@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ImageReader\ImageReader.csproj" />
     <ProjectReference Include="..\MachineCode\MachineCode.csproj" />
     <ProjectReference Include="..\TinyPinyin\TinyPinyin.csproj" />
   </ItemGroup>

@@ -93,7 +93,7 @@ namespace DiskSearch
                         var fi = new FileInfo(file);
                         var content = Doc.Read(fi);
                         var pinyin = Doc.GetPinyin(content);
-                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
+                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
                         _index.Add(doc);
                         Console.WriteLine("Index Added/Updated: {0}: {1}", fi.FullName, fi.Length);
                     }
@@ -142,7 +142,7 @@ namespace DiskSearch
                 var fi = new FileInfo(e.FullPath);
                 var content = Doc.Read(fi);
                 var pinyin = Doc.GetPinyin(content);
-                var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
+                var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
                 _index.Add(doc);
                 Console.WriteLine("\nIndex Added: {0}: {1}", fi.FullName, fi.Length);
             }
@@ -171,7 +171,7 @@ namespace DiskSearch
                         var fi = new FileInfo(e.FullPath);
                         var content = Doc.Read(fi);
                         var pinyin = Doc.GetPinyin(content);
-                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
+                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
                         _index.Add(doc);
                         Console.WriteLine("\nIndex Updated: {0}: {1}", fi.FullName, fi.Length);
                         return;
@@ -182,7 +182,7 @@ namespace DiskSearch
                         var fi = new FileInfo(e.FullPath);
                         var content = Doc.Read(fi);
                         var pinyin = Doc.GetPinyin(content);
-                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin);
+                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
                         _index.Add(doc);
                         Console.WriteLine("\nIndex Added: {0}: {1}", fi.FullName, fi.Length);
                         break;

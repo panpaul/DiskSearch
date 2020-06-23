@@ -29,19 +29,20 @@ namespace Database
                     Id = MachineCode.MachineCode.GetMachineCode()
                 };
             });
-            
+
             _directory = FSDirectory.Open(indexLocation);
             var indexConfig = new IndexWriterConfig(AppLuceneVersion, _analyzer);
             _writer = new IndexWriter(_directory, indexConfig);
         }
 
-        public static Document GenerateDocument(string path, string content, string pinyin)
+        public static Document GenerateDocument(string path, string content, string pinyin, string tag)
         {
             var doc = new Document
             {
                 new StringField("Path", path, Field.Store.YES),
                 new TextField("Content", content, Field.Store.YES),
-                new TextField("Pinyin", pinyin, Field.Store.YES)
+                new TextField("Pinyin", pinyin, Field.Store.YES),
+                new StringField("Tag", tag, Field.Store.YES)
             };
             return doc;
         }
@@ -52,7 +53,8 @@ namespace Database
             {
                 new StringField("Path", s.Path, Field.Store.YES),
                 new TextField("Content", s.Content, Field.Store.YES),
-                new TextField("Pinyin", s.Pinyin, Field.Store.YES)
+                new TextField("Pinyin", s.Pinyin, Field.Store.YES),
+                new TextField("Tag", s.Tag, Field.Store.YES)
             };
             return doc;
         }
@@ -92,7 +94,10 @@ namespace Database
         {
             try
             {
-                var queryPhrase = new MultiFieldQueryParser(AppLuceneVersion, new[] {"Content", "Pinyin"}, _analyzer);
+                var queryPhrase = new MultiFieldQueryParser(AppLuceneVersion, new[] {"Content", "Pinyin","Tag"}, _analyzer)
+                {
+                    DefaultOperator = QueryParserBase.AND_OPERATOR
+                };
 
                 var query = queryPhrase.Parse(word);
 
@@ -109,7 +114,8 @@ namespace Database
                     {
                         Path = foundDoc.Get("Path"),
                         Content = foundDoc.Get("Content"),
-                        Pinyin = foundDoc.Get("Pinyin")
+                        Pinyin = foundDoc.Get("Pinyin"),
+                        Tag = foundDoc.Get("Tag")
                     };
                     results[i] = result;
                     i++;
@@ -143,6 +149,7 @@ namespace Database
             public string Path;
             public string Content;
             public string Pinyin;
+            public string Tag;
         }
     }
 }
