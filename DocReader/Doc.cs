@@ -1,7 +1,9 @@
 ﻿using System.IO;
 using System.Text;
 using System.Text.RegularExpressions;
-using MimeTypes;
+using Database;
+using FileType;
+using Lucene.Net.Documents;
 using Sentry;
 using Sentry.Protocol;
 using TinyPinyin;
@@ -43,41 +45,53 @@ namespace DocReader
             return CleanUpSpaces(sb.ToString());
         }
 
-        public static string Read(FileInfo file)
+        public static Document Read(FileInfo file)
         {
             IReader reader;
             var pathContent = file.FullName
-                .Replace(".", " ").Replace("\\", " ").Replace("/", " ").Replace(":", " ") + " ";
-            
-            // TODO: self make
-            var fileType = MimeTypeMap.GetMimeType(file.Extension);
-            // currently a stupid method to support markdown
-            if (fileType.StartsWith("text/") || file.Extension == ".md")
+                .Replace(".", " ").Replace("\\", " ").Replace("/", " ").Replace(":", " ");
+            var doc = Engine.GenerateDocument(
+                file.FullName,
+                CleanUpSpaces(pathContent),
+                CleanUpSpaces(GetPinyin(pathContent)),
+                "");
+
+            var fileType = FileTypeMap.GetType(file.Extension);
+            string tag;
+            switch (fileType)
             {
-                reader = new TextReader(file);
-                return CleanUpSpaces(pathContent + reader.ReadAll());
+                case FileTypeMap.TypeCode.TypeText:
+                    tag = "text";
+                    reader = new TextReader(file);
+                    break;
+                case FileTypeMap.TypeCode.TypeDocx:
+                    tag = "word";
+                    reader = new WordReader(file);
+                    break;
+                case FileTypeMap.TypeCode.TypePptx:
+                    tag = "powerpoint";
+                    reader = new PowerPointReader(file);
+                    break;
+                case FileTypeMap.TypeCode.TypeXlsx:
+                    tag = "excel";
+                    reader = new ExcelReader(file);
+                    break;
+                case FileTypeMap.TypeCode.TypeImage:
+                    tag = "image";
+                    reader = new ImageReader(file);
+                    break;
+                case FileTypeMap.TypeCode.TypeUnsupported:
+                    return doc;
+                default: return doc;
             }
 
-            if (fileType.StartsWith("application/vnd.openxmlformats-officedocument.wordprocessingml"))
-            {
-                reader = new WordReader(file);
-                return CleanUpSpaces(pathContent + reader.ReadAll());
-            }
+            var content = pathContent + " " + reader.ReadAll();
+            var pinyin = GetPinyin(content);
+            content = CleanUpSpaces(content);
+            pinyin = CleanUpSpaces(pinyin);
 
-            if (fileType.StartsWith("application/vnd.openxmlformats-officedocument.spreadsheetml"))
-            {
-                reader = new ExcelReader(file);
-                return CleanUpSpaces(pathContent + reader.ReadAll());
-            }
-
-            if (fileType.StartsWith("application/vnd.openxmlformats-officedocument.presentationml"))
-            {
-                reader = new PowerPointReader(file);
-                return CleanUpSpaces(pathContent + reader.ReadAll());
-            }
-
-            // TODO add Image Reader
-            return CleanUpSpaces(pathContent);
+            doc = Engine.GenerateDocument(file.FullName, content, pinyin, tag);
+            return doc;
         }
     }
 }

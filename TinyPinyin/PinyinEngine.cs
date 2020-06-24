@@ -5,7 +5,7 @@ using System.Text;
 
 namespace TinyPinyin
 {
-    public static class Engine
+    public static class PinyinEngine
     {
         public static string[] PinyinFromDict(string wordInDict, List<IPinyinDict> pinyinDictSet)
         {

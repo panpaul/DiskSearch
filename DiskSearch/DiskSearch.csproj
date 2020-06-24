@@ -5,9 +5,10 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>DiskSearch.Program</StartupObject>
     <Authors>Paul</Authors>
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <Version>1.0.1</Version>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.1</FileVersion>
+    <Company>ldcraft</Company>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">

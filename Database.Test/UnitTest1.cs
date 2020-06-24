@@ -35,7 +35,8 @@ namespace Database.Test
                         {
                             Content = "Index Query: " + i + GenerateRandomString(100),
                             Path = GenerateRandomString(10),
-                            Pinyin = GenerateRandomString(10)
+                            Pinyin = GenerateRandomString(10),
+                            Tag = ""
                         }
                     )
                 );

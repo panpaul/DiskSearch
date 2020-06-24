@@ -25,9 +25,3 @@ jobs:
 
     - name: Publish DiskSearch.GUI
       run: dotnet publish -p:PublishProfile=DiskSearch.GUI\Properties\CI.pubxml
-
-    - name: Upload build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: DiskSearch.GUI
-        path: DiskSearch.GUI/publish/

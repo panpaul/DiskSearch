@@ -3,8 +3,8 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <Authors>Paul</Authors>
-    <Product>DiskSearch</Product>
     <Company>ldcraft</Company>
+    <Product>DiskSearch</Product>
   </PropertyGroup>
 
 </Project>

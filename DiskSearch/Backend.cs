@@ -91,9 +91,7 @@ namespace DiskSearch
                     {
                         if (_blacklist.Judge(file)) continue;
                         var fi = new FileInfo(file);
-                        var content = Doc.Read(fi);
-                        var pinyin = Doc.GetPinyin(content);
-                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
+                        var doc = Doc.Read(fi);
                         _index.Add(doc);
                         Console.WriteLine("Index Added/Updated: {0}: {1}", fi.FullName, fi.Length);
                     }
@@ -140,9 +138,7 @@ namespace DiskSearch
                 Console.WriteLine("\nIndex Deleted: {0}", e.FullPath);
                 if (_blacklist.Judge(e.FullPath)) return;
                 var fi = new FileInfo(e.FullPath);
-                var content = Doc.Read(fi);
-                var pinyin = Doc.GetPinyin(content);
-                var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
+                var doc = Doc.Read(fi);
                 _index.Add(doc);
                 Console.WriteLine("\nIndex Added: {0}: {1}", fi.FullName, fi.Length);
             }
@@ -157,40 +153,35 @@ namespace DiskSearch
             if (!_init) return;
             try
             {
+                string path;
                 switch (e.ChangeType)
                 {
                     case WatcherChangeTypes.Deleted:
                     {
                         _index.Delete(e.FullPath);
                         Console.WriteLine("\nIndex Deleted: {0}", e.FullPath);
-                        break;
+                        return;
                     }
                     case WatcherChangeTypes.Changed:
                     {
-                        if (_blacklist.Judge(e.FullPath)) break;
-                        var fi = new FileInfo(e.FullPath);
-                        var content = Doc.Read(fi);
-                        var pinyin = Doc.GetPinyin(content);
-                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
-                        _index.Add(doc);
-                        Console.WriteLine("\nIndex Updated: {0}: {1}", fi.FullName, fi.Length);
-                        return;
+                        path = e.FullPath;
+                        break;
                     }
                     case WatcherChangeTypes.Created:
                     {
-                        if (_blacklist.Judge(e.FullPath)) break;
-                        var fi = new FileInfo(e.FullPath);
-                        var content = Doc.Read(fi);
-                        var pinyin = Doc.GetPinyin(content);
-                        var doc = Engine.GenerateDocument(fi.FullName, content, pinyin,"");
-                        _index.Add(doc);
-                        Console.WriteLine("\nIndex Added: {0}: {1}", fi.FullName, fi.Length);
+                        path = e.FullPath;
                         break;
                     }
                     default:
                         Console.WriteLine("\nError Occured");
-                        break;
+                        return;
                 }
+
+                if (_blacklist.Judge(path)) return;
+                var fi = new FileInfo(e.FullPath);
+                var doc = Doc.Read(fi);
+                _index.Add(doc);
+                Console.WriteLine("\nIndex Updated: {0}: {1}", fi.FullName, fi.Length);
             }
             catch (Exception exception)
             {
