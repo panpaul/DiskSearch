@@ -62,7 +62,7 @@
 
         <tb:TaskbarIcon
             IconSource="logo.ico"
-            ToolTipText="DiskSearch"
+            ToolTipText="DiskSearch - (Double Click to Show/Hide)"
             DoubleClickCommand="{StaticResource TrayCommand}" />
 
     </Grid>
