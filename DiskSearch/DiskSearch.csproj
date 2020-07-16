@@ -16,7 +16,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Sentry" Version="2.1.1" />
+    <PackageReference Include="Sentry" Version="2.1.4" />
   </ItemGroup>
 
   <ItemGroup>

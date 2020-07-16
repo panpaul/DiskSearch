@@ -3,20 +3,28 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DiskSearch.GUI"
+        xmlns:htmlwpf="http://schemas.danielsabel.com/tinyhtmlwpf/2020"
         mc:Ignorable="d"
         Title="DiskSearch" Height="450" Width="800" MinHeight="250" MinWidth="480">
     <Grid>
-        <Button x:Name="RefreshIndex" Content="Refresh Index" HorizontalAlignment="Left" Margin="25,0,0,30"
-                VerticalAlignment="Bottom" Click="RefreshIndex_Click" />
-        <TextBox x:Name="SearchKeyword" Margin="25,30,25,0" Text="" TextWrapping="Wrap"
-                 VerticalAlignment="Top" TextChanged="SearchKeyword_TextChanged" Grid.ColumnSpan="2" />
-        <ListView x:Name="ResultListView" Margin="25,65,25,70" Grid.ColumnSpan="2">
+        <ListView x:Name="ResultListView" Margin="25,65,25,70">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
                         <GridViewColumn Header="filename" DisplayMemberBinding="{Binding Filename}" />
                         <GridViewColumn Header="path" DisplayMemberBinding="{Binding Path}" />
+                        <GridViewColumn Header="Description">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <htmlwpf:WpfHtmlControl FontSize="12" Html="{Binding Description}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                            <GridViewColumn.HeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="MinWidth" Value="400" />
+                                </Style>
+                            </GridViewColumn.HeaderContainerStyle>
+                        </GridViewColumn>
                     </GridView.Columns>
                 </GridView>
             </ListView.View>
@@ -27,13 +35,23 @@
                     <MenuItem Header="Copy Path" Click="MenuItem_Copy_Click" />
                 </ContextMenu>
             </ListView.ContextMenu>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Height" Value="50" />
+                </Style>
+            </ListView.ItemContainerStyle>
         </ListView>
+
         <Label x:Name="TipLabel" Content="Type to search:" HorizontalAlignment="Left" Margin="25,5,0,0"
                VerticalAlignment="Top" />
         <Button x:Name="RebuildIndex" Content="Rebuild Index" HorizontalAlignment="Left" Margin="120,0,0,30"
                 VerticalAlignment="Bottom" Click="RebuildIndex_Click" />
         <Button x:Name="Config" Content="Config" HorizontalAlignment="Left" Margin="215,0,0,30"
                 VerticalAlignment="Bottom" Click="Config_Click" />
+        <Button x:Name="RefreshIndex" Content="Refresh Index" HorizontalAlignment="Left" Margin="25,0,0,30"
+                VerticalAlignment="Bottom" Click="RefreshIndex_Click" />
+        <TextBox x:Name="SearchKeyword" Margin="25,30,25,0" Text="" TextWrapping="Wrap"
+                 VerticalAlignment="Top" TextChanged="SearchKeyword_TextChanged" Grid.ColumnSpan="2" />
 
     </Grid>
 </Window>

@@ -85,9 +85,11 @@ namespace DocReader
                 default: return doc;
             }
 
-            var content = pathContent + " " + reader.ReadAll();
+            // In Database\Engine.cs we defined that the max length is 80
+            var paddingBlank = new string(' ',80);
+            var content = reader.ReadAll();
             var pinyin = GetPinyin(content);
-            content = CleanUpSpaces(content);
+            content = pathContent + paddingBlank + CleanUpSpaces(content);
             pinyin = CleanUpSpaces(pinyin);
 
             doc = Engine.GenerateDocument(file.FullName, content, pinyin, tag);

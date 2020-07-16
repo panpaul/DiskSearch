@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using JiebaNet.Segmenter;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
 using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
+using Lucene.Net.Search.Highlight;
 using Lucene.Net.Store;
 using Lucene.Net.Util;
 using Sentry;
@@ -94,17 +96,24 @@ namespace Database
         {
             try
             {
-                var queryPhrase = new MultiFieldQueryParser(AppLuceneVersion, new[] {"Content", "Pinyin","Tag"}, _analyzer)
-                {
-                    DefaultOperator = QueryParserBase.AND_OPERATOR
-                };
+                var queryPhrase =
+                    new MultiFieldQueryParser(AppLuceneVersion, new[] {"Content", "Pinyin", "Tag"}, _analyzer)
+                    {
+                        DefaultOperator = QueryParserBase.AND_OPERATOR
+                    };
 
                 var query = queryPhrase.Parse(word);
-
                 var searcher = new IndexSearcher(_writer.GetReader(true));
-                var hits = searcher.Search(query, 50).ScoreDocs;
-
+                var hits = searcher.Search(query, int.MaxValue).ScoreDocs;
                 var results = new Scheme[hits.Length];
+
+                var scorer = new QueryScorer(query);
+                var simpleHtmlFormatter =
+                    new SimpleHTMLFormatter("<span style=\"background: yellow; \"><strong>", "</strong></span>");
+                var highlighter = new Highlighter(simpleHtmlFormatter, scorer)
+                {
+                    TextFragmenter = new SimpleFragmenter(80)
+                };
 
                 var i = 0;
                 foreach (var hit in hits)
@@ -117,6 +126,9 @@ namespace Database
                         Pinyin = foundDoc.Get("Pinyin"),
                         Tag = foundDoc.Get("Tag")
                     };
+                    var tokenStream = _analyzer.TokenStream("Content", new StringReader(result.Content));
+                    result.Description = highlighter.GetBestFragment(tokenStream, result.Content);
+
                     results[i] = result;
                     i++;
                 }
@@ -150,6 +162,8 @@ namespace Database
             public string Content;
             public string Pinyin;
             public string Tag;
+
+            public string Description;
         }
     }
 }

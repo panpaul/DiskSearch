@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -44,13 +45,6 @@ namespace DiskSearch.GUI
 
             SetupIndex();
             _backend.Watch(_config.SearchPath);
-        }
-
-        private void SetupIndex()
-        {
-            _backend = new Backend(_basePath);
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => _backend.Close();
-            RefreshIndex.IsEnabled = true;
         }
 
         private async void RefreshIndex_Click(object sender, RoutedEventArgs e)
@@ -142,6 +136,13 @@ namespace DiskSearch.GUI
             Clipboard.SetText(item.Path);
         }
 
+        private void SetupIndex()
+        {
+            _backend = new Backend(_basePath);
+            AppDomain.CurrentDomain.ProcessExit += (s, e) => _backend.Close();
+            RefreshIndex.IsEnabled = true;
+        }
+
         private void BlockInput()
         {
             SearchKeyword.IsEnabled = false;
@@ -163,11 +164,13 @@ namespace DiskSearch.GUI
     {
         public Results(Engine.Scheme scheme)
         {
+            Description = scheme.Description;
             Path = scheme.Path;
             Filename = System.IO.Path.GetFileName(Path);
         }
 
         public string Filename { get; }
         public string Path { get; }
+        public string Description { get; }
     }
 }

@@ -4,19 +4,20 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <AssemblyName>Database</AssemblyName>
     <RootNamespace>Database</RootNamespace>
-    <Version>1.0.0</Version>
+    <Version>1.0.1</Version>
     <Authors>Paul</Authors>
-    <AssemblyVersion>1.0.0.1</AssemblyVersion>
-    <FileVersion>1.0.0.1</FileVersion>
+    <AssemblyVersion>1.0.1.0</AssemblyVersion>
+    <FileVersion>1.0.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="jieba.NET" Version="0.42.2" />
-    <PackageReference Include="Lucene.Net" Version="4.8.0-beta00007" />
-    <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00007" />
-    <PackageReference Include="Lucene.Net.Queries" Version="4.8.0-beta00007" />
-    <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00007" />
-    <PackageReference Include="Sentry" Version="2.1.1" />
+    <PackageReference Include="Lucene.Net" Version="4.8.0-beta00009" />
+    <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00009" />
+    <PackageReference Include="Lucene.Net.Highlighter" Version="4.8.0-beta00009" />
+    <PackageReference Include="Lucene.Net.Queries" Version="4.8.0-beta00009" />
+    <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00009" />
+    <PackageReference Include="Sentry" Version="2.1.4" />
   </ItemGroup>
 
   <ItemGroup>

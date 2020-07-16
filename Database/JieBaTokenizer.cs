@@ -65,15 +65,13 @@ namespace Database
         private Lucene.Net.Analysis.Token Next()
         {
             var res = _iter.MoveNext();
-            if (res)
-            {
-                var word = _iter.Current;
-                if (word == null) return null;
-                var token = new Lucene.Net.Analysis.Token(word.Word, word.StartIndex, word.EndIndex);
-                return token;
-            }
+            if (!res) return null;
 
-            return null;
+            var word = _iter.Current;
+            if (word == null) return null;
+            var token = new Lucene.Net.Analysis.Token(word.Word, word.StartIndex, word.EndIndex);
+            return token;
+
         }
 
         public override void Reset()

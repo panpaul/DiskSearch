@@ -11,9 +11,9 @@ namespace Database
     {
         private readonly TokenizerMode _mode;
 
-        public JieBaAnalyzer(TokenizerMode Mode)
+        public JieBaAnalyzer(TokenizerMode mode)
         {
-            _mode = Mode;
+            _mode = mode;
         }
 
         protected override TokenStreamComponents CreateComponents(string filedName, TextReader reader)
@@ -26,6 +26,18 @@ namespace Database
             tokenStream.AddAttribute<IOffsetAttribute>();
 
             return new TokenStreamComponents(tokenizer, tokenStream);
+        }
+
+        public TokenStream TokenStream(string fieldName, TextReader reader)
+        {
+            var tokenizer = new JieBaTokenizer(reader, _mode);
+
+            var tokenStream = (TokenStream) new LowerCaseFilter(LuceneVersion.LUCENE_48, tokenizer);
+
+            tokenStream.AddAttribute<ICharTermAttribute>();
+            tokenStream.AddAttribute<IOffsetAttribute>();
+
+            return tokenStream;
         }
     }
 }

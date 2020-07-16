@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Linq;
 using NUnit.Framework;
 
@@ -12,6 +13,7 @@ namespace Database.Test
         [SetUp]
         public void Setup()
         {
+            Directory.Delete("./index",true);
             _index = new Engine("./index");
         }
 
@@ -48,8 +50,8 @@ namespace Database.Test
 
             _index.Close();
 
-            Assert.AreEqual(50, resultIndex.Count());
-            Assert.AreEqual(50, resultPinyin.Count());
+            Assert.AreEqual(200, resultIndex.Count());
+            Assert.AreEqual(101, resultPinyin.Count());
         }
 
         private static string GenerateRandomString(int length)
