@@ -4,15 +4,22 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:htmlwpf="http://schemas.danielsabel.com/tinyhtmlwpf/2020"
+        xmlns:tb="http://www.hardcodet.net/taskbar"
+        xmlns:local="clr-namespace:DiskSearch.GUI"
         mc:Ignorable="d"
-        Title="DiskSearch" Height="450" Width="800" MinHeight="250" MinWidth="480">
+        Title="DiskSearch" Height="450" Width="800" MinHeight="250" MinWidth="480"
+        StateChanged="MainWindow_OnStateChanged">
     <Grid>
+        <Grid.Resources>
+            <local:TrayCommand x:Key="TrayCommand" />
+        </Grid.Resources>
+
         <ListView x:Name="ResultListView" Margin="25,65,25,70">
             <ListView.View>
                 <GridView>
                     <GridView.Columns>
-                        <GridViewColumn Header="filename" DisplayMemberBinding="{Binding Filename}" />
-                        <GridViewColumn Header="path" DisplayMemberBinding="{Binding Path}" />
+                        <GridViewColumn Header="filename" Width="100" DisplayMemberBinding="{Binding Filename}" />
+                        <GridViewColumn Header="path" Width="100" DisplayMemberBinding="{Binding Path}" />
                         <GridViewColumn Header="Description">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
@@ -21,7 +28,7 @@
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.HeaderContainerStyle>
                                 <Style TargetType="{x:Type GridViewColumnHeader}">
-                                    <Setter Property="MinWidth" Value="400" />
+                                    <Setter Property="MinWidth" Value="550" />
                                 </Style>
                             </GridViewColumn.HeaderContainerStyle>
                         </GridViewColumn>
@@ -52,6 +59,11 @@
                 VerticalAlignment="Bottom" Click="RefreshIndex_Click" />
         <TextBox x:Name="SearchKeyword" Margin="25,30,25,0" Text="" TextWrapping="Wrap"
                  VerticalAlignment="Top" TextChanged="SearchKeyword_TextChanged" Grid.ColumnSpan="2" />
+
+        <tb:TaskbarIcon
+            IconSource="logo.ico"
+            ToolTipText="DiskSearch"
+            DoubleClickCommand="{StaticResource TrayCommand}" />
 
     </Grid>
 </Window>

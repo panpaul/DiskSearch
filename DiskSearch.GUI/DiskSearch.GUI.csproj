@@ -6,8 +6,8 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>logo.ico</ApplicationIcon>
-    <AssemblyVersion>1.0.3.0</AssemblyVersion>
-    <FileVersion>1.0.3.0</FileVersion>
+    <AssemblyVersion>1.0.3.1</AssemblyVersion>
+    <FileVersion>1.0.3.1</FileVersion>
     <Version>1.0.3</Version>
     <Authors>Paul</Authors>
     <Company>ldcraft</Company>
@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
     <PackageReference Include="Sentry" Version="2.1.4" />
     <PackageReference Include="TinyHtml.Wpf" Version="1.2.1" />
   </ItemGroup>

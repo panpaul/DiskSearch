@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using Database;
 using Sentry;
 using Sentry.Protocol;
@@ -45,6 +45,11 @@ namespace DiskSearch.GUI
 
             SetupIndex();
             _backend.Watch(_config.SearchPath);
+        }
+
+        private void MainWindow_OnStateChanged(object sender, EventArgs e)
+        {
+            ShowInTaskbar = WindowState != WindowState.Minimized;
         }
 
         private async void RefreshIndex_Click(object sender, RoutedEventArgs e)
@@ -141,6 +146,9 @@ namespace DiskSearch.GUI
             _backend = new Backend(_basePath);
             AppDomain.CurrentDomain.ProcessExit += (s, e) => _backend.Close();
             RefreshIndex.IsEnabled = true;
+            RebuildIndex.IsEnabled = true;
+            SearchKeyword.IsEnabled = true;
+            Config.IsEnabled = true;
         }
 
         private void BlockInput()
@@ -172,5 +180,28 @@ namespace DiskSearch.GUI
         public string Filename { get; }
         public string Path { get; }
         public string Description { get; }
+    }
+
+    public class TrayCommand : ICommand
+    {
+        public void Execute(object parameter)
+        {
+            var window = Application.Current.MainWindow;
+            if (window == null) return;
+            window.WindowState = window.WindowState switch
+            {
+                WindowState.Normal => WindowState.Minimized,
+                WindowState.Maximized => WindowState.Minimized,
+                WindowState.Minimized => WindowState.Normal,
+                _ => window.WindowState
+            };
+        }
+
+        public bool CanExecute(object parameter)
+        {
+            return true;
+        }
+
+        public event EventHandler CanExecuteChanged;
     }
 }
