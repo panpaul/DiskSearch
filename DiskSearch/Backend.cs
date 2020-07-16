@@ -35,7 +35,7 @@ namespace DiskSearch
         public void Close()
         {
             _init = false;
-            _index.Close();
+            _index?.Close();
         }
 
         public void Walk(string path)
