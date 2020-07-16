@@ -1,5 +1,6 @@
 ﻿using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
@@ -97,6 +98,48 @@ namespace DiskSearch.GUI
             _config.Read();
             if (oldPath != _config.SearchPath)
                 RebuildIndex_Click(sender, e);
+        }
+
+        private void MenuItem_OpenDir_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (Results) ResultListView.SelectedItem;
+
+            if (item == null)
+            {
+                MessageBox.Show("No Files Selected!");
+                return;
+            }
+
+            if (!File.Exists(item.Path)) return;
+
+            var argument = "/select, \"" + item.Path + "\"";
+            Process.Start("explorer.exe", argument);
+        }
+
+        private void MenuItem_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (Results) ResultListView.SelectedItem;
+
+            if (item == null)
+            {
+                MessageBox.Show("No Files Selected!");
+                return;
+            }
+
+            _backend.Delete(item.Path);
+        }
+
+        private void MenuItem_Copy_Click(object sender, RoutedEventArgs e)
+        {
+            var item = (Results) ResultListView.SelectedItem;
+
+            if (item == null)
+            {
+                MessageBox.Show("No Files Selected!");
+                return;
+            }
+
+            Clipboard.SetText(item.Path);
         }
 
         private void BlockInput()

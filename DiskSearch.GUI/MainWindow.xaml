@@ -7,10 +7,6 @@
         mc:Ignorable="d"
         Title="DiskSearch" Height="450" Width="800" MinHeight="250" MinWidth="480">
     <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="9*"/>
-            <ColumnDefinition Width="7*"/>
-        </Grid.ColumnDefinitions>
         <Button x:Name="RefreshIndex" Content="Refresh Index" HorizontalAlignment="Left" Margin="25,0,0,30"
                 VerticalAlignment="Bottom" Click="RefreshIndex_Click" />
         <TextBox x:Name="SearchKeyword" Margin="25,30,25,0" Text="" TextWrapping="Wrap"
@@ -24,12 +20,20 @@
                     </GridView.Columns>
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open Directory" Click="MenuItem_OpenDir_Click" />
+                    <MenuItem Header="Delete in Index" Click="MenuItem_Delete_Click" />
+                    <MenuItem Header="Copy Path" Click="MenuItem_Copy_Click" />
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
-        <Label x:Name="TipLabel" Content="Type to search:" HorizontalAlignment="Left" Margin="25,5,0,0" VerticalAlignment="Top"/>
+        <Label x:Name="TipLabel" Content="Type to search:" HorizontalAlignment="Left" Margin="25,5,0,0"
+               VerticalAlignment="Top" />
         <Button x:Name="RebuildIndex" Content="Rebuild Index" HorizontalAlignment="Left" Margin="120,0,0,30"
-            VerticalAlignment="Bottom" Click="RebuildIndex_Click" />
+                VerticalAlignment="Bottom" Click="RebuildIndex_Click" />
         <Button x:Name="Config" Content="Config" HorizontalAlignment="Left" Margin="215,0,0,30"
-            VerticalAlignment="Bottom" Click="Config_Click" />
+                VerticalAlignment="Bottom" Click="Config_Click" />
 
     </Grid>
 </Window>

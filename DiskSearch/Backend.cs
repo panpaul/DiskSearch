@@ -209,5 +209,10 @@ namespace DiskSearch
         {
             return _init ? _index.Search(word) : null;
         }
+
+        public void Delete(string filepath)
+        {
+            if (_init) _index.Delete(filepath);
+        }
     }
 }

@@ -6,8 +6,8 @@
     <StartupObject>DiskSearch.Program</StartupObject>
     <Authors>Paul</Authors>
     <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1.0</AssemblyVersion>
-    <FileVersion>1.0.1.1</FileVersion>
+    <AssemblyVersion>1.0.1.1</AssemblyVersion>
+    <FileVersion>1.0.1.2</FileVersion>
     <Company>ldcraft</Company>
   </PropertyGroup>
 
