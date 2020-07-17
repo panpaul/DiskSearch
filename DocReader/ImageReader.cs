@@ -5,8 +5,8 @@ namespace DocReader
 {
     internal class ImageReader : IReader
     {
+        private static readonly ImageTag Image = new ImageTag();
         private readonly FileInfo _file;
-        private static readonly ImageTag _imageReader = new ImageTag();
 
         public ImageReader(FileInfo file)
         {
@@ -15,7 +15,7 @@ namespace DocReader
 
         public string ReadAll()
         {
-            return _imageReader.ClassifySingleImage(_file.FullName);
+            return Image.ClassifySingleImage(_file.FullName);
         }
     }
 }
