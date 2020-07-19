@@ -82,6 +82,21 @@ namespace DocReader.Test
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
+        [TestCase("../../../../TestData/pdf.pdf")]
+        [TestCase("../../../../TestData/pdf_invalid.pdf")]
+        public void DocReadPdf_Test(string testCase)
+        {
+            var file = new FileInfo(testCase);
+
+            var strActual = Doc.Read(file).Get("Content");
+            var strExpected = "֪ͨ";
+
+            if (testCase.Contains("invalid")) strExpected = "pdf_invalid";
+
+            Assert.IsTrue(strActual.Contains(strExpected));
+        }
+
+
         [Test]
         public void DocReadNone_Test()
         {

@@ -80,13 +80,17 @@ namespace DocReader
                     tag = "image";
                     reader = new ImageReader(file);
                     break;
+                case FileTypeMap.TypeCode.TypePdf:
+                    tag = "pdf";
+                    reader = new PDFReader(file);
+                    break;
                 case FileTypeMap.TypeCode.TypeUnsupported:
                     return doc;
                 default: return doc;
             }
 
             // In Database\Engine.cs we defined that the max length is 80
-            var paddingBlank = new string(' ',80);
+            var paddingBlank = new string(' ', 80);
             var content = reader.ReadAll();
             var pinyin = GetPinyin(content);
             content = pathContent + paddingBlank + CleanUpSpaces(content);

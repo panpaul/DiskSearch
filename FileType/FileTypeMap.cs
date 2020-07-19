@@ -12,6 +12,7 @@ namespace FileType
             TypePptx,
             TypeXlsx,
             TypeImage,
+            TypePdf,
             TypeUnsupported
         }
 
@@ -22,6 +23,7 @@ namespace FileType
         {
             var source = new Dictionary<string, TypeCode>(StringComparer.OrdinalIgnoreCase)
             {
+                // Text files
                 {".txt", TypeCode.TypeText},
                 {".md", TypeCode.TypeText},
                 {".html", TypeCode.TypeText},
@@ -59,7 +61,9 @@ namespace FileType
                 {".jpeg", TypeCode.TypeImage},
                 {".png", TypeCode.TypeImage},
                 {".gif", TypeCode.TypeImage},
-                {".bmp", TypeCode.TypeImage}
+                {".bmp", TypeCode.TypeImage},
+                // Pdf
+                {".pdf", TypeCode.TypePdf}
             };
             return source;
         }
