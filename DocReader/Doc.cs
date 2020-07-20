@@ -54,7 +54,7 @@ namespace DocReader
                 file.FullName,
                 CleanUpSpaces(pathContent),
                 CleanUpSpaces(GetPinyin(pathContent)),
-                "");
+                "unsupported");
 
             var fileType = FileTypeMap.GetType(file.Extension);
             string tag;

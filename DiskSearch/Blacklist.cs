@@ -37,6 +37,7 @@ namespace DiskSearch
 
         public bool Judge(string filename)
         {
+            filename = filename.ToLower();
             return _list.Any(filename.Contains);
         }
     }

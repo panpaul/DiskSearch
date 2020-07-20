@@ -198,16 +198,19 @@ namespace DiskSearch
                 if (word == null || word.Equals("!QUIT")) break;
                 Console.Clear();
                 Console.WriteLine("==== Searching for : " + word + " ====");
-                var schemes = _index.Search(word);
+                var schemes = _index.Search(word, "");
                 foreach (var scheme in schemes) Console.WriteLine(scheme.Path);
                 //Console.WriteLine(scheme.Content);
                 Console.WriteLine("==== End Search ====");
             }
         }
 
-        public IEnumerable<Engine.Scheme> Search(string word)
+        public IEnumerable<Engine.Scheme> Search(string word, string tag)
         {
-            return _init ? _index.Search(word) : null;
+            tag = tag.ToLower();
+            if (tag.Equals("all")) tag = "";
+
+            return _init ? _index.Search(word, tag) : null;
         }
 
         public void Delete(string filepath)

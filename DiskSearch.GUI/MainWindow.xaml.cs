@@ -41,6 +41,8 @@ namespace DiskSearch.GUI
             _resultList = new BindingList<Results>();
             ResultListView.ItemsSource = _resultList;
 
+            TagSelector.SelectedItem = TagSelector;
+
             _config = new Config(Path.Combine(_basePath, "config.json"));
 
             SetupIndex();
@@ -52,6 +54,19 @@ namespace DiskSearch.GUI
             ShowInTaskbar = WindowState != WindowState.Minimized;
         }
 
+        private void SearchKeyword_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (_backend == null) return;
+            DoSearch(SearchKeyword.Text, TagSelector.Text);
+        }
+
+        private void TagSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (_backend == null || SearchKeyword.Text.Equals("")) return;
+            var tag = ((ComboBoxItem) TagSelector.SelectedItem).Content.ToString();
+            DoSearch(SearchKeyword.Text, tag);
+        }
+
         private async void RefreshIndex_Click(object sender, RoutedEventArgs e)
         {
             BlockInput();
@@ -61,13 +76,6 @@ namespace DiskSearch.GUI
 
             RestoreInput();
             RefreshIndex.Content = "Refresh Index";
-        }
-
-        private void SearchKeyword_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var schemes = _backend.Search(SearchKeyword.Text);
-            _resultList.Clear();
-            foreach (var scheme in schemes) _resultList.Add(new Results(scheme));
         }
 
         private async void RebuildIndex_Click(object sender, RoutedEventArgs e)
@@ -139,6 +147,13 @@ namespace DiskSearch.GUI
             }
 
             Clipboard.SetText(item.Path);
+        }
+
+        private void DoSearch(string word, string tag)
+        {
+            var schemes = _backend.Search(word, tag);
+            _resultList.Clear();
+            foreach (var scheme in schemes) _resultList.Add(new Results(scheme));
         }
 
         private void SetupIndex()

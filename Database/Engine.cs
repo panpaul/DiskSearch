@@ -92,17 +92,26 @@ namespace Database
             _writer.Flush(true, true);
         }
 
-        public IEnumerable<Scheme> Search(string word)
+        public IEnumerable<Scheme> Search(string word, string tag)
         {
             try
             {
                 var queryPhrase =
-                    new MultiFieldQueryParser(AppLuceneVersion, new[] {"Content", "Pinyin", "Tag"}, _analyzer)
+                    new MultiFieldQueryParser(AppLuceneVersion, new[] {"Path", "Content", "Pinyin"}, _analyzer)
                     {
                         DefaultOperator = QueryParserBase.AND_OPERATOR
                     };
 
-                var query = queryPhrase.Parse(word);
+                var queryInput = queryPhrase.Parse(word);
+                var query = queryInput;
+                if (!tag.Equals(""))
+                {
+                    var queryTag = new TermQuery(new Term("Tag", tag));
+                    // TODO: Using noTag property might filter out some results
+                    var noTag = queryPhrase.Parse(tag);
+                    query = new BooleanQuery {{queryTag, Occur.MUST}, {query, Occur.MUST}, {noTag, Occur.MUST_NOT}};
+                }
+
                 var searcher = new IndexSearcher(_writer.GetReader(true));
                 var hits = searcher.Search(query, int.MaxValue).ScoreDocs;
                 var results = new Scheme[hits.Length];
