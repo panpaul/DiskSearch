@@ -48,12 +48,11 @@ namespace DocReader
         public static Document Read(FileInfo file)
         {
             IReader reader;
-            var pathContent = file.FullName
-                .Replace(".", " ").Replace("\\", " ").Replace("/", " ").Replace(":", " ");
+            var nameContent = file.Name;
             var doc = Engine.GenerateDocument(
                 file.FullName,
-                CleanUpSpaces(pathContent),
-                CleanUpSpaces(GetPinyin(pathContent)),
+                CleanUpSpaces(nameContent),
+                CleanUpSpaces(GetPinyin(nameContent)),
                 "unsupported");
 
             var fileType = FileTypeMap.GetType(file.Extension);
@@ -93,7 +92,7 @@ namespace DocReader
             var paddingBlank = new string(' ', 80);
             var content = reader.ReadAll();
             var pinyin = GetPinyin(content);
-            content = pathContent + paddingBlank + CleanUpSpaces(content);
+            content = nameContent + paddingBlank + CleanUpSpaces(content);
             pinyin = CleanUpSpaces(pinyin);
 
             doc = Engine.GenerateDocument(file.FullName, content, pinyin, tag);

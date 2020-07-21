@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 
 namespace FileType
 {
@@ -76,6 +77,12 @@ namespace FileType
             if (!extension.StartsWith("."))
                 extension = "." + extension;
             return !Mappings.Value.TryGetValue(extension, out var type) ? TypeCode.TypeUnsupported : type;
+        }
+
+        public static TypeCode GetFileType(string path)
+        {
+            var file = new FileInfo(path);
+            return GetType(file.Extension);
         }
     }
 }

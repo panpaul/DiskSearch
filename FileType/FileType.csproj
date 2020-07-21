@@ -5,6 +5,8 @@
     <Authors>Paul</Authors>
     <Company>ldcraft</Company>
     <Product>DiskSearch</Product>
+    <AssemblyVersion>1.0.0.1</AssemblyVersion>
+    <FileVersion>1.0.0.1</FileVersion>
   </PropertyGroup>
 
 </Project>

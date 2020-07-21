@@ -41,7 +41,7 @@ namespace Database
         {
             var doc = new Document
             {
-                new StringField("Path", path, Field.Store.YES),
+                new TextField("Path", path, Field.Store.YES),
                 new TextField("Content", content, Field.Store.YES),
                 new TextField("Pinyin", pinyin, Field.Store.YES),
                 new StringField("Tag", tag, Field.Store.YES)
@@ -53,10 +53,10 @@ namespace Database
         {
             var doc = new Document
             {
-                new StringField("Path", s.Path, Field.Store.YES),
+                new TextField("Path", s.Path, Field.Store.YES),
                 new TextField("Content", s.Content, Field.Store.YES),
                 new TextField("Pinyin", s.Pinyin, Field.Store.YES),
-                new TextField("Tag", s.Tag, Field.Store.YES)
+                new StringField("Tag", s.Tag, Field.Store.YES)
             };
             return doc;
         }
@@ -97,19 +97,23 @@ namespace Database
             try
             {
                 var queryPhrase =
-                    new MultiFieldQueryParser(AppLuceneVersion, new[] {"Path", "Content", "Pinyin"}, _analyzer)
-                    {
-                        DefaultOperator = QueryParserBase.AND_OPERATOR
-                    };
+                    new MultiFieldQueryParser(
+                        AppLuceneVersion,
+                        new[] {"Path", "Content", "Pinyin"},
+                        _analyzer
+                    ) {DefaultOperator = Operator.AND};
 
                 var queryInput = queryPhrase.Parse(word);
                 var query = queryInput;
                 if (!tag.Equals(""))
                 {
                     var queryTag = new TermQuery(new Term("Tag", tag));
-                    // TODO: Using noTag property might filter out some results
-                    var noTag = queryPhrase.Parse(tag);
-                    query = new BooleanQuery {{queryTag, Occur.MUST}, {query, Occur.MUST}, {noTag, Occur.MUST_NOT}};
+                    query = new BooleanQuery {{queryTag, Occur.MUST}, {query, Occur.MUST}};
+                    if (!word.ToLower().Contains(tag))
+                    {
+                        var noTag = queryPhrase.Parse(tag);
+                        query = new BooleanQuery {{query, Occur.MUST}, {noTag, Occur.MUST_NOT}};
+                    }
                 }
 
                 var searcher = new IndexSearcher(_writer.GetReader(true));
@@ -135,8 +139,18 @@ namespace Database
                         Pinyin = foundDoc.Get("Pinyin"),
                         Tag = foundDoc.Get("Tag")
                     };
-                    var tokenStream = _analyzer.TokenStream("Content", new StringReader(result.Content));
-                    result.Description = highlighter.GetBestFragment(tokenStream, result.Content);
+
+                    // Do not highlight files that contains html
+                    var ext = new FileInfo(result.Path).Extension.ToLower();
+                    if (ext.Equals(".html") || ext.Equals(".htm"))
+                    {
+                        result.Description = "";
+                    }
+                    else
+                    {
+                        var tokenStream = _analyzer.TokenStream("Content", new StringReader(result.Content));
+                        result.Description = highlighter.GetBestFragment(tokenStream, result.Content);
+                    }
 
                     results[i] = result;
                     i++;

@@ -6,9 +6,9 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>logo.ico</ApplicationIcon>
-    <AssemblyVersion>1.0.3.2</AssemblyVersion>
-    <FileVersion>1.0.3.2</FileVersion>
-    <Version>1.0.3</Version>
+    <AssemblyVersion>1.0.4.1</AssemblyVersion>
+    <FileVersion>1.0.4.1</FileVersion>
+    <Version>1.0.4</Version>
     <Authors>Paul</Authors>
     <Company>ldcraft</Company>
     <Product>DiskSearch</Product>
