@@ -109,7 +109,7 @@ namespace Database
                 {
                     var queryTag = new TermQuery(new Term("Tag", tag));
                     query = new BooleanQuery {{queryTag, Occur.MUST}, {query, Occur.MUST}};
-                    if (!word.ToLower().Contains(tag))
+                    if (!(word.ToLower().Contains(tag) || tag.Equals("pdf")))
                     {
                         var noTag = queryPhrase.Parse(tag);
                         query = new BooleanQuery {{query, Occur.MUST}, {noTag, Occur.MUST_NOT}};
