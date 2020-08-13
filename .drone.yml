@@ -1,0 +1,8 @@
+kind: pipeline
+
+steps:
+- name: compile
+  image: microsoft/dotnet:sdk
+  commands:
+    - dotnet build
+    - dotnet publish -p:PublishProfile=DiskSearch.GUI\Properties\CI.pubxml
