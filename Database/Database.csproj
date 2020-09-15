@@ -17,7 +17,7 @@
     <PackageReference Include="Lucene.Net.Highlighter" Version="4.8.0-beta00011" />
     <PackageReference Include="Lucene.Net.Queries" Version="4.8.0-beta00011" />
     <PackageReference Include="Lucene.Net.QueryParser" Version="4.8.0-beta00011" />
-    <PackageReference Include="Sentry" Version="2.1.5" />
+    <PackageReference Include="Sentry" Version="2.1.6" />
   </ItemGroup>
 
   <ItemGroup>

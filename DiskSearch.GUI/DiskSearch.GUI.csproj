@@ -20,7 +20,7 @@
 
   <ItemGroup>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
-    <PackageReference Include="Sentry" Version="2.1.5" />
+    <PackageReference Include="Sentry" Version="2.1.6" />
     <PackageReference Include="TinyHtml.Wpf" Version="1.2.1" />
   </ItemGroup>
 
