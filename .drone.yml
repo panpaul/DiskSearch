@@ -2,7 +2,7 @@ kind: pipeline
 
 steps:
 - name: compile
-  image: microsoft/dotnet:sdk
+  image: mcr.microsoft.com/dotnet/core/sdk:3.1
   commands:
-    - dotnet build
-    - dotnet publish -p:PublishProfile=DiskSearch.GUI\Properties\CI.pubxml
+    - dotnet restore DiskSearch
+    - dotnet publish --no-restore DiskSearch
