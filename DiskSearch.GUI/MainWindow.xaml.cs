@@ -2,23 +2,21 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Input;
 using Database;
-using Hardcodet.Wpf.TaskbarNotification;
 using Sentry;
 using Sentry.Protocol;
 
 namespace DiskSearch.GUI
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow
     {
         private readonly string _basePath;
         private readonly Config _config;
         private readonly BindingList<Results> _resultList;
+
         private Backend _backend;
 
         public MainWindow()
@@ -67,7 +65,10 @@ namespace DiskSearch.GUI
         private void SearchKeyword_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_backend == null) return;
-            DoSearch(SearchKeyword.Text, TagSelector.Text);
+
+            var word = SearchKeyword.Text;
+            var tag = TagSelector.Text;
+            Task.Run(() => { DoSearch(word, tag); });
         }
 
         private void TagSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -177,8 +178,11 @@ namespace DiskSearch.GUI
         private void DoSearch(string word, string tag)
         {
             var schemes = _backend.Search(word, tag);
-            _resultList.Clear();
-            foreach (var scheme in schemes) _resultList.Add(new Results(scheme));
+            Dispatcher.BeginInvoke((Action) delegate
+            {
+                _resultList.Clear();
+                foreach (var scheme in schemes) _resultList.Add(new Results(scheme));
+            });
         }
 
         private void SetupIndex()
