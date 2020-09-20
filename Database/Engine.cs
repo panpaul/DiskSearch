@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading;
 using JiebaNet.Segmenter;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -87,11 +88,6 @@ namespace Database
             }
         }
 
-        public void Flush()
-        {
-            _writer.Flush(true, true);
-        }
-
         public IEnumerable<Scheme> Search(string word, string tag)
         {
             try
@@ -168,7 +164,6 @@ namespace Database
 
         public void Close()
         {
-            Flush();
             try
             {
                 _writer.Dispose();
@@ -177,6 +172,11 @@ namespace Database
             {
                 if (IndexWriter.IsLocked(_directory)) IndexWriter.Unlock(_directory);
             }
+        }
+
+        public void DeleteAll()
+        {
+            _writer.DeleteAll();
         }
 
         public struct Scheme

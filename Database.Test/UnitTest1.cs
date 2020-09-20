@@ -43,8 +43,6 @@ namespace Database.Test
                     )
                 );
 
-            _index.Flush();
-
             var resultIndex = _index.Search("index","");
             var resultPinyin = _index.Search("pinyin","");
 

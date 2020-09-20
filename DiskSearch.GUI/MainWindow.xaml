@@ -11,7 +11,6 @@
         StateChanged="MainWindow_OnStateChanged">
     <Grid>
         <Grid.Resources>
-            <local:TrayCommand x:Key="TrayCommand" />
         </Grid.Resources>
 
         <ListView x:Name="ResultListView" Margin="25,65,25,70">
@@ -59,7 +58,8 @@
                 VerticalAlignment="Bottom" Click="RefreshIndex_Click" />
         <TextBox x:Name="SearchKeyword" Margin="25,30,105,0" Text="" TextWrapping="Wrap"
                  VerticalAlignment="Top" TextChanged="SearchKeyword_TextChanged" Grid.ColumnSpan="2" Height="20" />
-        <ComboBox x:Name="TagSelector" SelectionChanged="TagSelector_OnSelectionChanged" HorizontalAlignment="Right" Margin="0,30,25,0" VerticalAlignment="Top" Width="65" Height="20">
+        <ComboBox x:Name="TagSelector" SelectionChanged="TagSelector_OnSelectionChanged" HorizontalAlignment="Right"
+                  Margin="0,30,25,0" VerticalAlignment="Top" Width="65" Height="20">
             <ComboBoxItem IsSelected="True">All</ComboBoxItem>
             <ComboBoxItem>Text</ComboBoxItem>
             <ComboBoxItem>Word</ComboBoxItem>
@@ -70,9 +70,17 @@
         </ComboBox>
 
         <tb:TaskbarIcon
+            Name="TaskBar"
             IconSource="logo.ico"
-            ToolTipText="DiskSearch - (Double Click to Show/Hide)"
-            DoubleClickCommand="{StaticResource TrayCommand}" />
-        
+            ToolTipText="DiskSearch"
+            MenuActivation="RightClick">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu Background="white">
+                    <MenuItem Header="Open/Hide" Click="Tray_Open_Click" />
+                    <MenuItem Header="Exit" Click="Tray_Exit_Click" />
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
     </Grid>
 </Window>

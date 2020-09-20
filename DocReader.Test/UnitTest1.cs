@@ -101,7 +101,7 @@ namespace DocReader.Test
         public void DocReadNone_Test()
         {
             var strActual = Doc.Read(new FileInfo("test1.test")).Get("Content");
-            const string strExpected = "test1 test";
+            const string strExpected = "test1.test";
 
             Assert.IsTrue(strActual.Contains(strExpected));
         }

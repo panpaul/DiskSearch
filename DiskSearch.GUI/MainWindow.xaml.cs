@@ -2,11 +2,13 @@
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using Database;
+using Hardcodet.Wpf.TaskbarNotification;
 using Sentry;
 using Sentry.Protocol;
 
@@ -47,6 +49,14 @@ namespace DiskSearch.GUI
 
             SetupIndex();
             _backend.Watch(_config.SearchPath);
+
+            Closed += OnClosedEvent;
+        }
+
+        private void OnClosedEvent(object sender, EventArgs e)
+        {
+            _backend.Close();
+            TaskBar.Dispose();
         }
 
         private void MainWindow_OnStateChanged(object sender, EventArgs e)
@@ -83,9 +93,8 @@ namespace DiskSearch.GUI
             RebuildIndex.Content = "Rebuilding...";
             BlockInput();
 
-            _backend.Close();
-            Directory.Delete(Path.Combine(_basePath, "index"), true);
-            _backend.Setup(_basePath);
+            _backend.DeleteAll();
+
             await Task.Run(() => { _backend.Walk(_config.SearchPath); });
 
             RebuildIndex.Content = "Rebuild Index";
@@ -149,6 +158,22 @@ namespace DiskSearch.GUI
             Clipboard.SetText(item.Path);
         }
 
+        private void Tray_Open_Click(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState switch
+            {
+                WindowState.Normal => WindowState.Minimized,
+                WindowState.Maximized => WindowState.Minimized,
+                WindowState.Minimized => WindowState.Normal,
+                _ => WindowState
+            };
+        }
+
+        private void Tray_Exit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
         private void DoSearch(string word, string tag)
         {
             var schemes = _backend.Search(word, tag);
@@ -195,28 +220,5 @@ namespace DiskSearch.GUI
         public string Filename { get; }
         public string Path { get; }
         public string Description { get; }
-    }
-
-    public class TrayCommand : ICommand
-    {
-        public void Execute(object parameter)
-        {
-            var window = Application.Current.MainWindow;
-            if (window == null) return;
-            window.WindowState = window.WindowState switch
-            {
-                WindowState.Normal => WindowState.Minimized,
-                WindowState.Maximized => WindowState.Minimized,
-                WindowState.Minimized => WindowState.Normal,
-                _ => window.WindowState
-            };
-        }
-
-        public bool CanExecute(object parameter)
-        {
-            return true;
-        }
-
-        public event EventHandler CanExecuteChanged;
     }
 }

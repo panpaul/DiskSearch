@@ -100,7 +100,7 @@ namespace DiskSearch
                         Console.WriteLine(e.Message);
                     }
 
-                _index.Flush();
+                //_index.Commit();
 
                 foreach (var str in subDirs)
                     dirs.Push(str);
@@ -216,6 +216,11 @@ namespace DiskSearch
         public void Delete(string filepath)
         {
             if (_init) _index.Delete(filepath);
+        }
+
+        public void DeleteAll()
+        {
+            if (_init) _index.DeleteAll();
         }
     }
 }
