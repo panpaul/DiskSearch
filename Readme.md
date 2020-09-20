@@ -1,4 +1,4 @@
 ## DiskSearch
 
-Build Status: ![.NET Core Desktop](https://github.com/panpaul/DiskSearch/workflows/.NET%20Core%20Desktop/badge.svg)
+Build Status: [![Build Status](https://ci.ofortune.xyz/api/badges/panpaul/DiskSearch/status.svg?ref=refs/heads/dev)](https://ci.ofortune.xyz/panpaul/DiskSearch)
 
