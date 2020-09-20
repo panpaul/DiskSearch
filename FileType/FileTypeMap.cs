@@ -78,11 +78,5 @@ namespace FileType
                 extension = "." + extension;
             return !Mappings.Value.TryGetValue(extension, out var type) ? TypeCode.TypeUnsupported : type;
         }
-
-        public static TypeCode GetFileType(string path)
-        {
-            var file = new FileInfo(path);
-            return GetType(file.Extension);
-        }
     }
 }

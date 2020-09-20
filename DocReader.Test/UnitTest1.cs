@@ -1,3 +1,4 @@
+using System;
 using System.IO;
 using NUnit.Framework;
 
@@ -91,15 +92,31 @@ namespace DocReader.Test
             var strActual = Doc.Read(file).Get("Content");
             var strExpected = "֪ͨ";
 
-            if (testCase.Contains("invalid")) strExpected = "pdf_invalid";
+            if (testCase.Contains("invalid")) strExpected = "invalid";
 
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
+        [TestCase("../../../../TestData/pizza.jpg")]
+        [TestCase("../../../../TestData/pic_invalid.jpg")]
+        public void DocReadImage_Test(string testCase)
+        {
+            var file = new FileInfo(testCase);
+
+            var strActual = Doc.Read(file).Get("Content");
+            var strExpected = "pizza";
+
+            if (testCase.Contains("invalid")) strExpected = "Broken";
+
+            Assert.IsTrue(strActual.Contains(strExpected));
+        }
 
         [Test]
         public void DocReadNone_Test()
         {
+            Console.WriteLine(TestContext.CurrentContext.WorkDirectory);
+            Console.WriteLine(TestContext.CurrentContext.TestDirectory);
+
             var strActual = Doc.Read(new FileInfo("test1.test")).Get("Content");
             const string strExpected = "test1.test";
 

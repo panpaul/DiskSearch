@@ -13,24 +13,28 @@ namespace Database.Test
         [SetUp]
         public void Setup()
         {
-            Directory.Delete("./index",true);
+            Directory.Delete("./index", true);
             _index = new Engine("./index");
         }
 
         [Test]
         public void Scheme_Add_Search_Test()
         {
-            var doc = Engine.GenerateDocument("path", "content", "pinyin","");
+            var doc = Engine.GenerateDocument("path", "content", "pinyin", "");
             _index.Add(doc);
             for (var i = 0; i < 100; i++)
+            {
+                var path = GenerateRandomString(10);
                 _index.Add(
                     Engine.GenerateDocument(
-                        GenerateRandomString(10),
+                        path,
                         "Index Query: " + i + GenerateRandomString(100),
                         "pinyin " + GenerateRandomString(100),
-                        ""
+                        "x"
                     )
                 );
+                if (i == 99) _index.Delete(path);
+            }
 
             for (var i = 0; i < 100; i++)
                 _index.Add(Engine.GenerateDocument(new Engine.Scheme
@@ -38,18 +42,21 @@ namespace Database.Test
                             Content = "Index Query: " + i + GenerateRandomString(100),
                             Path = GenerateRandomString(10),
                             Pinyin = GenerateRandomString(10),
-                            Tag = ""
+                            Tag = "y"
                         }
                     )
                 );
 
-            var resultIndex = _index.Search("index","");
-            var resultPinyin = _index.Search("pinyin","");
+            var resultIndex = _index.Search("index", "x");
+            var resultPinyin = _index.Search("pinyin", "y");
+            Assert.AreEqual(99, resultIndex.Count());
+            Assert.AreEqual(0, resultPinyin.Count());
+
+            _index.DeleteAll();
+            resultIndex = _index.Search("index", "x");
+            Assert.AreEqual(0, resultIndex.Count());
 
             _index.Close();
-
-            Assert.AreEqual(200, resultIndex.Count());
-            Assert.AreEqual(101, resultPinyin.Count());
         }
 
         private static string GenerateRandomString(int length)

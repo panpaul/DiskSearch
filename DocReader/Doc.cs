@@ -93,6 +93,7 @@ namespace DocReader
             var content = reader.ReadAll();
             var pinyin = GetPinyin(content);
             content = nameContent + paddingBlank + CleanUpSpaces(content);
+            content = CleanUpSpaces(content);
             pinyin = CleanUpSpaces(pinyin);
 
             doc = Engine.GenerateDocument(file.FullName, content, pinyin, tag);

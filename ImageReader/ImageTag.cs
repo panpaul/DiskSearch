@@ -34,8 +34,15 @@ namespace ImageReader
                 ImagePath = imagePath
             };
             var predictor = _mlContext.Model.CreatePredictionEngine<ImageData, ImagePrediction>(_model);
-            var prediction = predictor.Predict(imageData);
-            return prediction.PredictedLabelValue;
+            try
+            {
+                var prediction = predictor.Predict(imageData);
+                return prediction.PredictedLabelValue;
+            }
+            catch (Exception)
+            {
+                return "Broken Image";
+            }
         }
 
         private ITransformer GenerateModel(MLContext mlContext)

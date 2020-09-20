@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Threading;
 using JiebaNet.Segmenter;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
