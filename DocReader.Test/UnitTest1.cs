@@ -1,4 +1,3 @@
-using System;
 using System.IO;
 using NUnit.Framework;
 
@@ -12,32 +11,40 @@ namespace DocReader.Test
         {
         }
 
-        [TestCase("1")]
-        [TestCase("../../../../TestData/not_a_valid_docx.docx")]
-        //[TestCase("2")]
+        private static string Convert(string file)
+        {
+            if (TestContext.CurrentContext.WorkDirectory.Contains("netcoreapp3.1"))
+                // test located in \bin\Debug\netcoreapp3.1
+                return "../../../../TestData/" + file;
+            return "./TestData/" + file;
+        }
+
+        [TestCase("word1.docx")]
+        [TestCase("word2.docx")]
+        [TestCase("not_a_valid_docx.docx")]
         public void DocReadWord_Test(string testCase)
         {
-            var file = new FileInfo("../../../../TestData/word" + testCase + ".docx");
+            var file = new FileInfo(Convert(testCase));
 
             var strActual = Doc.Read(file).Get("Content");
-            var strExpected = "²âÊÔÎÄµµ" + testCase + "²âÊÔÎÄµµ";
+            var strExpected = "æµ‹è¯•æ–‡æ¡£";
             if (testCase.Contains("valid")) strExpected = "not a valid";
             Assert.IsTrue(strActual.Contains(strExpected));
 
             strActual = Doc.GetPinyin(strActual);
-            strExpected = "CE SHI WEN DANG CE SHI WEN DANG CSWD CSWD";
+            strExpected = "CE SHI WEN DANG CSWD";
             if (testCase.Contains("valid")) strExpected = " ";
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
-        [TestCase("../../../../TestData/pp1.pptx")]
-        [TestCase("../../../../TestData/not_a_valid_pptx.pptx")]
+        [TestCase("pp1.pptx")]
+        [TestCase("not_a_valid_pptx.pptx")]
         public void DocReadPowerPoint_Test(string testCase)
         {
-            var file = new FileInfo(testCase);
+            var file = new FileInfo(Convert(testCase));
 
             var strActual = Doc.Read(file).Get("Content");
-            var strExpected = "ÖĞÎÄ²âÊÔ Helloworld Êı¾İ";
+            var strExpected = "ä¸­æ–‡æµ‹è¯• Helloworld æ•°æ®";
             if (testCase.Contains("valid")) strExpected = "not a valid";
             Assert.IsTrue(strActual.Contains(strExpected));
 
@@ -47,13 +54,13 @@ namespace DocReader.Test
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
-        [TestCase("../../../../TestData/txt.txt")]
+        [TestCase("txt.txt")]
         [TestCase("not_existed.txt")]
         public void DocReadTxt_Test(string testCase)
         {
-            var file = new FileInfo(testCase);
+            var file = new FileInfo(Convert(testCase));
 
-            var strExpected = "Hello world! ÄãºÃÊÀ½ç£¡";
+            var strExpected = "Hello world! ä½ å¥½ä¸–ç•Œï¼";
             if (!file.Exists) strExpected = "not";
             var strActual = Doc.Read(file).Get("Content");
             Assert.IsTrue(strActual.Contains(strExpected));
@@ -64,15 +71,15 @@ namespace DocReader.Test
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
-        [TestCase("../../../../TestData/ss1.xlsx")]
-        [TestCase("../../../../TestData/not_a_valid_xlsx.xlsx")]
+        [TestCase("ss1.xlsx")]
+        [TestCase("not_a_valid_xlsx.xlsx")]
         public void DocReadExcel_Test(string testCase)
         {
-            var file = new FileInfo(testCase);
+            var file = new FileInfo(Convert(testCase));
 
             var strActual = Doc.Read(file).Get("Content");
             var strExpected =
-                "Sheet3 ÓĞ ²¼¶û Öµ TRUE Sheet2 Ò² ÓĞ Êı¾İ ²âÊÔ ÎÄµµ Õâ¶ù ÓĞ Êı¾İ";
+                "Sheet3 æœ‰ å¸ƒå°” å€¼ TRUE Sheet2 ä¹Ÿ æœ‰ æ•°æ® æµ‹è¯• æ–‡æ¡£ è¿™å„¿ æœ‰ æ•°æ®";
             if (testCase.Contains("valid")) strExpected = "not a valid xlsx";
             Assert.IsTrue(strActual.Contains(strExpected));
 
@@ -83,25 +90,25 @@ namespace DocReader.Test
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
-        [TestCase("../../../../TestData/pdf.pdf")]
-        [TestCase("../../../../TestData/pdf_invalid.pdf")]
+        [TestCase("pdf.pdf")]
+        [TestCase("pdf_invalid.pdf")]
         public void DocReadPdf_Test(string testCase)
         {
-            var file = new FileInfo(testCase);
+            var file = new FileInfo(Convert(testCase));
 
             var strActual = Doc.Read(file).Get("Content");
-            var strExpected = "Í¨Öª";
+            var strExpected = "é€šçŸ¥";
 
             if (testCase.Contains("invalid")) strExpected = "invalid";
 
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
-        [TestCase("../../../../TestData/pizza.jpg")]
-        [TestCase("../../../../TestData/pic_invalid.jpg")]
+        [TestCase("pizza.jpg")]
+        [TestCase("pic_invalid.jpg")]
         public void DocReadImage_Test(string testCase)
         {
-            var file = new FileInfo(testCase);
+            var file = new FileInfo(Convert(testCase));
 
             var strActual = Doc.Read(file).Get("Content");
             var strExpected = "pizza";
@@ -114,9 +121,6 @@ namespace DocReader.Test
         [Test]
         public void DocReadNone_Test()
         {
-            Console.WriteLine(TestContext.CurrentContext.WorkDirectory);
-            Console.WriteLine(TestContext.CurrentContext.TestDirectory);
-
             var strActual = Doc.Read(new FileInfo("test1.test")).Get("Content");
             const string strExpected = "test1.test";
 
