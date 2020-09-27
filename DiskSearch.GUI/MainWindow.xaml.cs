@@ -180,6 +180,7 @@ namespace DiskSearch.GUI
             var schemes = _backend.Search(word, tag);
             Dispatcher.BeginInvoke((Action) delegate
             {
+                if (SearchKeyword.Text != word || TagSelector.Text != tag) return;
                 _resultList.Clear();
                 foreach (var scheme in schemes) _resultList.Add(new Results(scheme));
             });

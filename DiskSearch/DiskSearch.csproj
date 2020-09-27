@@ -6,9 +6,10 @@
     <StartupObject>DiskSearch.Program</StartupObject>
     <Authors>Paul</Authors>
     <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1.1</AssemblyVersion>
-    <FileVersion>1.0.1.2</FileVersion>
+    <AssemblyVersion>1.0.1.3</AssemblyVersion>
+    <FileVersion>1.0.1.3</FileVersion>
     <Company>ldcraft</Company>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
@@ -29,6 +30,10 @@
     <None Update="blacklist.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="logo.ico" />
   </ItemGroup>
 
 </Project>

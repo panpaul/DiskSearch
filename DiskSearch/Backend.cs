@@ -26,9 +26,10 @@ namespace DiskSearch
                 _index = new Engine(Path.Combine(path, "index"));
                 _init = true;
             }
-            catch
+            catch (Exception e)
             {
                 _init = false;
+                Console.WriteLine(e);
             }
         }
 
@@ -55,7 +56,7 @@ namespace DiskSearch
 
         private void WalkDir(string root)
         {
-            var dirs = new Stack<string>(10000);
+            var dirs = new Stack<string>();
 
             if (!Directory.Exists(root)) throw new ArgumentException();
 
@@ -64,10 +65,11 @@ namespace DiskSearch
             while (dirs.Count > 0)
             {
                 var currentDir = dirs.Pop();
-                string[] subDirs;
                 try
                 {
-                    subDirs = Directory.GetDirectories(currentDir);
+                    var subDirs = Directory.GetDirectories(currentDir);
+                    foreach (var str in subDirs)
+                        dirs.Push(str);
                 }
                 catch (Exception e)
                 {
@@ -101,9 +103,6 @@ namespace DiskSearch
                     }
 
                 //_index.Commit();
-
-                foreach (var str in subDirs)
-                    dirs.Push(str);
             }
         }
 
@@ -125,7 +124,6 @@ namespace DiskSearch
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                SentrySdk.CaptureException(e);
             }
         }
 
@@ -186,22 +184,6 @@ namespace DiskSearch
             catch (Exception exception)
             {
                 Console.WriteLine(exception);
-            }
-        }
-
-        public void Prompt()
-        {
-            while (true)
-            {
-                Console.Write("Search for What ? >");
-                var word = Console.ReadLine();
-                if (word == null || word.Equals("!QUIT")) break;
-                Console.Clear();
-                Console.WriteLine("==== Searching for : " + word + " ====");
-                var schemes = _index.Search(word, "");
-                foreach (var scheme in schemes) Console.WriteLine(scheme.Path);
-                //Console.WriteLine(scheme.Content);
-                Console.WriteLine("==== End Search ====");
             }
         }
 
