@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using Database;
 using DocReader;
-using Sentry;
 
 namespace DiskSearch
 {
@@ -18,7 +17,7 @@ namespace DiskSearch
             Setup(path);
         }
 
-        public void Setup(string path)
+        private void Setup(string path)
         {
             try
             {
@@ -203,6 +202,11 @@ namespace DiskSearch
         public void DeleteAll()
         {
             if (_init) _index.DeleteAll();
+        }
+
+        public void UpdateBlackList()
+        {
+            _blacklist.Update();
         }
     }
 }

@@ -2,12 +2,14 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Input;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DiskSearch.GUI
 {
     public partial class ConfigWindow : Window
     {
+        private readonly Blacklist _blacklist;
         private readonly Config _config;
 
         public ConfigWindow()
@@ -17,8 +19,12 @@ namespace DiskSearch.GUI
                 Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                 "DiskSearch"
             );
+
             _config = new Config(Path.Combine(basePath, "config.json"));
+            _blacklist = new Blacklist(Path.Combine(basePath, "blacklist.json"));
+
             PathTextBox.Text = _config.SearchPath;
+            foreach (var item in _blacklist.List) BlackListBox.Items.Add(item);
         }
 
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -37,6 +43,8 @@ namespace DiskSearch.GUI
 
             _config.SearchPath = newPath;
             _config.Save();
+            _blacklist.Save();
+
             Close();
         }
 
@@ -44,9 +52,24 @@ namespace DiskSearch.GUI
         {
             var folderDialog = new FolderBrowserDialog();
             if (folderDialog.ShowDialog() == System.Windows.Forms.DialogResult.OK)
-            {
                 PathTextBox.Text = folderDialog.SelectedPath;
-            }
+        }
+
+        private void BlackListButton_Click(object sender, RoutedEventArgs e)
+        {
+            var str = BlackListTextBox.Text;
+            if (str == "") return;
+            BlackListBox.Items.Add(str);
+            _blacklist.List.Add(str);
+            BlackListTextBox.Text = "";
+        }
+
+        private void BlackListBox_Delete_Click(object sender, RoutedEventArgs e)
+        {
+            var item = BlackListBox.SelectedItem;
+            if (item == null) return;
+            BlackListBox.Items.Remove(item);
+            _blacklist.List.Remove((string) item);
         }
     }
 }

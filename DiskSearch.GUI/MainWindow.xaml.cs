@@ -78,17 +78,6 @@ namespace DiskSearch.GUI
             DoSearch(SearchKeyword.Text, tag);
         }
 
-        private async void RefreshIndex_Click(object sender, RoutedEventArgs e)
-        {
-            BlockInput();
-            RefreshIndex.Content = "Refreshing...";
-
-            await Task.Run(() => { _backend.Walk(_config.SearchPath); });
-
-            RestoreInput();
-            RefreshIndex.Content = "Refresh Index";
-        }
-
         private async void RebuildIndex_Click(object sender, RoutedEventArgs e)
         {
             RebuildIndex.Content = "Rebuilding...";
@@ -111,8 +100,10 @@ namespace DiskSearch.GUI
             };
             configWindow.ShowDialog();
 
-            var oldPath = _config.SearchPath;
             _config.Read();
+            _backend.UpdateBlackList();
+
+            var oldPath = _config.SearchPath;
             if (oldPath != _config.SearchPath)
                 RebuildIndex_Click(sender, e);
         }
@@ -144,6 +135,7 @@ namespace DiskSearch.GUI
             }
 
             _backend.Delete(item.Path);
+            // TODO: Remove in list
         }
 
         private void MenuItem_Copy_Click(object sender, RoutedEventArgs e)
@@ -190,7 +182,6 @@ namespace DiskSearch.GUI
         {
             _backend = new Backend(_basePath);
             AppDomain.CurrentDomain.ProcessExit += (s, e) => _backend.Close();
-            RefreshIndex.IsEnabled = true;
             RebuildIndex.IsEnabled = true;
             SearchKeyword.IsEnabled = true;
             Config.IsEnabled = true;
@@ -199,7 +190,6 @@ namespace DiskSearch.GUI
         private void BlockInput()
         {
             SearchKeyword.IsEnabled = false;
-            RefreshIndex.IsEnabled = false;
             RebuildIndex.IsEnabled = false;
             Config.IsEnabled = false;
         }
@@ -207,7 +197,6 @@ namespace DiskSearch.GUI
         private void RestoreInput()
         {
             SearchKeyword.IsEnabled = true;
-            RefreshIndex.IsEnabled = true;
             RebuildIndex.IsEnabled = true;
             Config.IsEnabled = true;
         }

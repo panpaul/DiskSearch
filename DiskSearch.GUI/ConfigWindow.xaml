@@ -3,14 +3,32 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:DiskSearch.GUI"
         mc:Ignorable="d"
-        Title="ConfigWindow" Height="250" Width="400" MinWidth="400" MinHeight="250" MaxWidth="400" MaxHeight="250" ResizeMode="NoResize">
-    <Grid >
-        <Label x:Name="PathLabel" Content="Path:" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top"/>
-        <TextBox x:Name="PathTextBox" HorizontalAlignment="Left" Margin="64,24,0,0" Text="" TextWrapping="Wrap" VerticalAlignment="Top" Width="250"/>
-        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Right" Margin="0,0,70,20" VerticalAlignment="Bottom" Width="35" Click="SaveButton_Click"/>
-        <Button x:Name="CloseButton" Content="Close" HorizontalAlignment="Right" Margin="0,0,30,20" VerticalAlignment="Bottom" Width="35" Click="CloseButton_Click"/>
-        <Button x:Name="SelectButton" Content="Select" HorizontalAlignment="Right" Margin="0,23,25,0" VerticalAlignment="Top" Width="40" Click="SelectButton_Click"/>
+        Title="ConfigWindow" Height="280" Width="400" MinWidth="400" MinHeight="280" MaxWidth="400" MaxHeight="280"
+        ResizeMode="NoResize">
+    <Grid>
+        <Label x:Name="PathLabel" Content="Path:" HorizontalAlignment="Left" Margin="20,20,0,0" VerticalAlignment="Top" />
+        <TextBox x:Name="PathTextBox" HorizontalAlignment="Left" Margin="64,24,0,0" Text="" TextWrapping="Wrap"
+                 VerticalAlignment="Top" Width="250" />
+        <Button x:Name="SaveButton" Content="Save" HorizontalAlignment="Right" Margin="0,0,70,20"
+                VerticalAlignment="Bottom" Width="35" Click="SaveButton_Click" />
+        <Button x:Name="CloseButton" Content="Close" HorizontalAlignment="Right" Margin="0,0,30,20"
+                VerticalAlignment="Bottom" Width="35" Click="CloseButton_Click" />
+        <Button x:Name="SelectButton" Content="Select" HorizontalAlignment="Right" Margin="0,23,25,0"
+                VerticalAlignment="Top" Width="40" Click="SelectButton_Click" />
+        <Label x:Name="BlackListLabel" Content="Blacklists:" HorizontalAlignment="Left" Margin="20,50,0,0"
+               VerticalAlignment="Top" />
+        <ListBox x:Name="BlackListBox" HorizontalAlignment="Left" Margin="84,80,0,0" Width="230"
+                 VerticalAlignment="Top" Height="105">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Delete" Click="BlackListBox_Delete_Click" />
+                </ContextMenu>
+            </ListBox.ContextMenu>
+        </ListBox>
+        <TextBox x:Name="BlackListTextBox" HorizontalAlignment="Left" Margin="84,55,0,0" Text="" TextWrapping="Wrap"
+                 VerticalAlignment="Top" Width="230" />
+        <Button x:Name="BlackListButton" Content="Add" HorizontalAlignment="Right" Margin="0,52,25,0"
+                VerticalAlignment="Top" Width="40" Click="BlackListButton_Click" />
     </Grid>
 </Window>

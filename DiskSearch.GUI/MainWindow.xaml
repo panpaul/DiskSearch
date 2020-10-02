@@ -12,64 +12,8 @@
         <Grid.Resources>
         </Grid.Resources>
 
-        <ListView x:Name="ResultListView" Margin="25,65,25,70" d:DataContext="{d:DesignData Results}">
-            <ListView.View>
-                <GridView>
-                    <GridView.Columns>
-                        <GridViewColumn Header="filename" Width="100" DisplayMemberBinding="{Binding Filename}" />
-                        <GridViewColumn Header="path" Width="100" DisplayMemberBinding="{Binding Path}" />
-                        <GridViewColumn Header="Description">
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <htmlwpf:WpfHtmlControl FontSize="12" Html="{Binding Description}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                            <GridViewColumn.HeaderContainerStyle>
-                                <Style TargetType="{x:Type GridViewColumnHeader}">
-                                    <Setter Property="MinWidth" Value="550" />
-                                </Style>
-                            </GridViewColumn.HeaderContainerStyle>
-                        </GridViewColumn>
-                    </GridView.Columns>
-                </GridView>
-            </ListView.View>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="Open Directory" Click="MenuItem_OpenDir_Click" />
-                    <MenuItem Header="Delete in Index" Click="MenuItem_Delete_Click" />
-                    <MenuItem Header="Copy Path" Click="MenuItem_Copy_Click" />
-                </ContextMenu>
-            </ListView.ContextMenu>
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="Height" Value="50" />
-                </Style>
-            </ListView.ItemContainerStyle>
-        </ListView>
-
-        <Label x:Name="TipLabel" Content="Type to search:" HorizontalAlignment="Left" Margin="25,5,0,0"
-               VerticalAlignment="Top" />
-        <Button x:Name="RebuildIndex" Content="Rebuild Index" HorizontalAlignment="Left" Margin="120,0,0,30"
-                VerticalAlignment="Bottom" Click="RebuildIndex_Click" />
-        <Button x:Name="Config" Content="Config" HorizontalAlignment="Left" Margin="215,0,0,30"
-                VerticalAlignment="Bottom" Click="Config_Click" />
-        <Button x:Name="RefreshIndex" Content="Refresh Index" HorizontalAlignment="Left" Margin="25,0,0,30"
-                VerticalAlignment="Bottom" Click="RefreshIndex_Click" />
-        <TextBox x:Name="SearchKeyword" Margin="25,30,105,0" Text="" TextWrapping="Wrap"
-                 VerticalAlignment="Top" TextChanged="SearchKeyword_TextChanged" Grid.ColumnSpan="2" Height="20" />
-        <ComboBox x:Name="TagSelector" SelectionChanged="TagSelector_OnSelectionChanged" HorizontalAlignment="Right"
-                  Margin="0,30,25,0" VerticalAlignment="Top" Width="65" Height="20">
-            <ComboBoxItem IsSelected="True">All</ComboBoxItem>
-            <ComboBoxItem>Text</ComboBoxItem>
-            <ComboBoxItem>Word</ComboBoxItem>
-            <ComboBoxItem>PowerPoint</ComboBoxItem>
-            <ComboBoxItem>Excel</ComboBoxItem>
-            <ComboBoxItem>Image</ComboBoxItem>
-            <ComboBoxItem>PDF</ComboBoxItem>
-        </ComboBox>
-
         <tb:TaskbarIcon
-            Name="TaskBar"
+            x:Name="TaskBar"
             IconSource="logo.ico"
             ToolTipText="DiskSearch"
             MenuActivation="RightClick">
@@ -80,6 +24,58 @@
                 </ContextMenu>
             </tb:TaskbarIcon.ContextMenu>
         </tb:TaskbarIcon>
+
+        <ListView x:Name="ResultListView" Margin="25,65,25,70" d:DataContext="{d:DesignData Results}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="filename" Width="100" DisplayMemberBinding="{Binding Filename}" />
+                    <GridViewColumn Header="path" Width="100" DisplayMemberBinding="{Binding Path}" />
+                    <GridViewColumn Header="Description">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <htmlwpf:WpfHtmlControl FontSize="12" Html="{Binding Description}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                        <GridViewColumn.HeaderContainerStyle>
+                            <Style TargetType="{x:Type GridViewColumnHeader}">
+                                <Setter Property="MinWidth" Value="550" />
+                            </Style>
+                        </GridViewColumn.HeaderContainerStyle>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Open Directory" Click="MenuItem_OpenDir_Click" />
+                    <MenuItem Header="Delete in Index" Click="MenuItem_Delete_Click" />
+                    <MenuItem Header="Copy Path" Click="MenuItem_Copy_Click" />
+                </ContextMenu>
+            </ListView.ContextMenu>
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Height" Value="50" />
+                </Style>
+            </ListView.ItemContainerStyle>
+        </ListView>
+
+        <Label x:Name="TipLabel" Content="Type to search:" HorizontalAlignment="Left" Margin="25,5,0,0"
+               VerticalAlignment="Top" />
+        <Button x:Name="RebuildIndex" Content="Rebuild Index" HorizontalAlignment="Left" Margin="25,0,0,30"
+                VerticalAlignment="Bottom" Click="RebuildIndex_Click" />
+        <Button x:Name="Config" Content="Config" HorizontalAlignment="Left" Margin="125,0,0,30"
+                VerticalAlignment="Bottom" Click="Config_Click" />
+        <TextBox x:Name="SearchKeyword" Margin="25,30,105,0" Text="" TextWrapping="Wrap"
+                 VerticalAlignment="Top" TextChanged="SearchKeyword_TextChanged" Grid.ColumnSpan="2" Height="20" />
+        <ComboBox x:Name="TagSelector" SelectionChanged="TagSelector_OnSelectionChanged" HorizontalAlignment="Right"
+                  Margin="0,30,25,0" VerticalAlignment="Top" Width="65" Height="20">
+            <ComboBoxItem IsSelected="True" Content="All"/>
+            <ComboBoxItem Content="Text"/>
+            <ComboBoxItem Content="Word"/>
+            <ComboBoxItem Content="PowerPoint"/>
+            <ComboBoxItem Content="Excel"/>
+            <ComboBoxItem Content="Image"/>
+            <ComboBoxItem Content="PDF"/>
+        </ComboBox>
 
     </Grid>
 </Window>

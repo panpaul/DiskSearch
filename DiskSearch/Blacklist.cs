@@ -6,39 +6,57 @@ using System.Text.Json;
 
 namespace DiskSearch
 {
-    internal class Blacklist
+    public class Blacklist
     {
-        private readonly List<string> _list;
+        private readonly string _blacklistPath;
 
         public Blacklist(string blacklistPath)
         {
             try
             {
-                string jsonString;
                 if (File.Exists(blacklistPath))
-                    jsonString = File.ReadAllText(blacklistPath);
+                    _blacklistPath = blacklistPath;
                 else
-                    jsonString =
-                        File.ReadAllText(
-                            Path.Combine(
-                                AppDomain.CurrentDomain.BaseDirectory ?? ".",
-                                "blacklist.json"
-                            )
+                    _blacklistPath =
+                        Path.Combine(
+                            AppDomain.CurrentDomain.BaseDirectory ?? ".",
+                            "blacklist.json"
                         );
-
-                _list = JsonSerializer.Deserialize<List<string>>(jsonString);
+                var jsonString = File.ReadAllText(_blacklistPath);
+                List = JsonSerializer.Deserialize<List<string>>(jsonString);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                _list = new List<string>();
+                List = new List<string>();
             }
         }
+
+        public List<string> List { get; set; }
 
         public bool Judge(string filename)
         {
             filename = filename.ToLower();
-            return _list.Any(filename.Contains);
+            return List.Any(filename.Contains);
+        }
+
+        public void Save()
+        {
+            try
+            {
+                var jsonString = JsonSerializer.Serialize(List);
+                File.WriteAllText(_blacklistPath, jsonString);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void Update()
+        {
+            var jsonString = File.ReadAllText(_blacklistPath);
+            List = JsonSerializer.Deserialize<List<string>>(jsonString);
         }
     }
 }
