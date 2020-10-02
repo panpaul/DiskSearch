@@ -135,6 +135,7 @@ namespace DiskSearch.GUI
             }
 
             _backend.Delete(item.Path);
+            _resultList.Remove(item);
             // TODO: Remove in list
         }
 
