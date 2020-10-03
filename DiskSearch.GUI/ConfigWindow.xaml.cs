@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Forms;
-using System.Windows.Input;
 using MessageBox = System.Windows.MessageBox;
 
 namespace DiskSearch.GUI

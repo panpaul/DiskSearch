@@ -18,10 +18,12 @@ namespace DiskSearch.Worker.Services
         {
             _logger.LogDebug($"DoSearch: Word:{request.Word} | Tag:{request.Tag}");
             var results = Worker.Backend.Search(request.Word, request.Tag);
+            if (results == null)
+                return Task.FromResult(new SearchReply {Results = {new Scheme {Path = "null", Description = "null"}}});
             var convert = results.Select(item => new Scheme
             {
-                Path = item.Path,
-                Description = item.Description
+                Path = item.Path ?? "null",
+                Description = item.Description ?? ""
             }).ToList();
             return Task.FromResult(new SearchReply {Results = {convert}});
         }
@@ -39,6 +41,9 @@ namespace DiskSearch.Worker.Services
                     Worker.Backend.UnWatch();
                     Worker.Backend.Watch(request.Path);
                     Task.Run(() => { Worker.Backend.Walk(request.Path); });
+                    break;
+                case CommandRequest.Types.Command.DeletePath:
+                    Worker.Backend.Delete(request.Path);
                     break;
                 default:
                     return Task.FromResult(new CommandReply {Status = false});

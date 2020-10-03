@@ -5,7 +5,8 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using Database;
+using DiskSearch.Worker.Services;
+using Grpc.Net.Client;
 using Sentry;
 using Sentry.Protocol;
 
@@ -13,14 +14,15 @@ namespace DiskSearch.GUI
 {
     public partial class MainWindow
     {
-        private readonly string _basePath;
         private readonly Config _config;
         private readonly BindingList<Results> _resultList;
+        private GrpcChannel _channel;
+        private Search.SearchClient _client;
 
-        private Backend _backend;
 
         public MainWindow()
         {
+            /* Sentry init */
             SentrySdk.Init("https://e9bae2c6285e48ea814087d78c9a40f1@sentry.io/4202655");
             SentrySdk.ConfigureScope(scope =>
             {
@@ -30,31 +32,32 @@ namespace DiskSearch.GUI
                 };
             });
 
+            /* UI init */
             InitializeComponent();
+            TagSelector.SelectedItem = TagSelector;
 
-            _basePath =
+            /* Config file init */
+            var basePath =
                 Path.Combine(
                     Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
                     "DiskSearch"
                 );
+            _config = new Config(Path.Combine(basePath, "config.json"));
 
+            /* Result list init */
             _resultList = new BindingList<Results>();
             ResultListView.ItemsSource = _resultList;
 
-            TagSelector.SelectedItem = TagSelector;
-
-            _config = new Config(Path.Combine(_basePath, "config.json"));
-
-            SetupIndex();
-            _backend.Watch(_config.SearchPath);
+            /* RPC */
+            SetupRemote();
 
             Closed += OnClosedEvent;
         }
 
         private void OnClosedEvent(object sender, EventArgs e)
         {
-            _backend.Close();
             TaskBar.Dispose();
+            _channel.Dispose();
         }
 
         private void MainWindow_OnStateChanged(object sender, EventArgs e)
@@ -64,8 +67,6 @@ namespace DiskSearch.GUI
 
         private void SearchKeyword_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (_backend == null) return;
-
             var word = SearchKeyword.Text;
             var tag = TagSelector.Text;
             Task.Run(() => { DoSearch(word, tag); });
@@ -73,26 +74,29 @@ namespace DiskSearch.GUI
 
         private void TagSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (_backend == null || SearchKeyword.Text.Equals("")) return;
+            if (SearchKeyword.Text.Equals("")) return;
             var tag = ((ComboBoxItem) TagSelector.SelectedItem).Content.ToString();
             DoSearch(SearchKeyword.Text, tag);
         }
 
-        private async void RebuildIndex_Click(object sender, RoutedEventArgs e)
+        private void RebuildIndex_Click(object sender, RoutedEventArgs e)
         {
-            RebuildIndex.Content = "Rebuilding...";
-            BlockInput();
+            //RebuildIndex.Content = "Rebuilding...";
+            //BlockInput();
 
-            _backend.DeleteAll();
+            _client.Control(new CommandRequest
+            {
+                Cmd = CommandRequest.Types.Command.ReloadPath,
+                Path = _config.SearchPath
+            });
 
-            await Task.Run(() => { _backend.Walk(_config.SearchPath); });
-
-            RebuildIndex.Content = "Rebuild Index";
-            RestoreInput();
+            //RebuildIndex.Content = "Rebuild Index";
+            //RestoreInput();
         }
 
         private void Config_Click(object sender, RoutedEventArgs e)
         {
+            var oldPath = _config.SearchPath;
             var configWindow = new ConfigWindow
             {
                 Owner = this,
@@ -101,9 +105,8 @@ namespace DiskSearch.GUI
             configWindow.ShowDialog();
 
             _config.Read();
-            _backend.UpdateBlackList();
+            _client.Control(new CommandRequest {Cmd = CommandRequest.Types.Command.ReloadBlackList});
 
-            var oldPath = _config.SearchPath;
             if (oldPath != _config.SearchPath)
                 RebuildIndex_Click(sender, e);
         }
@@ -134,7 +137,11 @@ namespace DiskSearch.GUI
                 return;
             }
 
-            _backend.Delete(item.Path);
+            _client.Control(new CommandRequest
+            {
+                Cmd = CommandRequest.Types.Command.DeletePath,
+                Path = item.Path
+            });
             _resultList.Remove(item);
             // TODO: Remove in list
         }
@@ -168,26 +175,40 @@ namespace DiskSearch.GUI
             Close();
         }
 
+        /// <summary>
+        ///     Search files through worker
+        /// </summary>
+        /// <param name="word">keyword</param>
+        /// <param name="tag">file type tag</param>
         private void DoSearch(string word, string tag)
         {
-            var schemes = _backend.Search(word, tag);
+            var results = _client.DoSearch(new SearchRequest {Tag = tag, Word = word});
             Dispatcher.BeginInvoke((Action) delegate
             {
                 if (SearchKeyword.Text != word || TagSelector.Text != tag) return;
                 _resultList.Clear();
-                foreach (var scheme in schemes) _resultList.Add(new Results(scheme));
+                foreach (var scheme in results.Results)
+                {
+                    if (scheme.Path.Equals("null")) continue;
+                    _resultList.Add(new Results(scheme));
+                }
             });
         }
 
-        private void SetupIndex()
+        /// <summary>
+        ///     Connect to DiskSearch.Worker
+        /// </summary>
+        private void SetupRemote()
         {
-            _backend = new Backend(_basePath);
-            
-            RebuildIndex.IsEnabled = true;
-            SearchKeyword.IsEnabled = true;
-            Config.IsEnabled = true;
+            _channel = GrpcChannel.ForAddress("https://localhost:5001");
+            _client = new Search.SearchClient(_channel);
+
+            RestoreInput();
         }
 
+        /// <summary>
+        ///     Restore UI interaction
+        /// </summary>
         private void BlockInput()
         {
             SearchKeyword.IsEnabled = false;
@@ -195,6 +216,9 @@ namespace DiskSearch.GUI
             Config.IsEnabled = false;
         }
 
+        /// <summary>
+        ///     Block interaction on UI
+        /// </summary>
         private void RestoreInput()
         {
             SearchKeyword.IsEnabled = true;
@@ -205,7 +229,7 @@ namespace DiskSearch.GUI
 
     internal class Results
     {
-        public Results(Engine.Scheme scheme)
+        public Results(Scheme scheme)
         {
             Description = scheme.Description;
             Path = scheme.Path;

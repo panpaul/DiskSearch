@@ -19,6 +19,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Google.Protobuf" Version="3.13.0" />
+    <PackageReference Include="Grpc.Net.Client" Version="2.31.0" />
+    <PackageReference Include="Grpc.Tools" Version="2.32.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Hardcodet.NotifyIcon.Wpf" Version="1.0.8" />
     <PackageReference Include="Sentry" Version="2.1.6" />
     <PackageReference Include="TinyHtml.Wpf" Version="1.2.1" />
@@ -31,6 +37,10 @@
 
   <ItemGroup>
     <Resource Include="logo.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Protobuf Include="..\DiskSearch.Worker\Protos\search.proto" GrpcServices="Client" />
   </ItemGroup>
 
 </Project>

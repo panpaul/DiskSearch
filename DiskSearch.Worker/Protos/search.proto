@@ -13,6 +13,7 @@ message CommandRequest{
 	enum Command{
 		ReloadBlackList = 0;
 		ReloadPath = 1;
+		DeletePath = 2;
 	}
 	Command cmd = 1;
 	string path = 2;
