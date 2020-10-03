@@ -182,7 +182,7 @@ namespace DiskSearch.GUI
         private void SetupIndex()
         {
             _backend = new Backend(_basePath);
-            AppDomain.CurrentDomain.ProcessExit += (s, e) => _backend.Close();
+            
             RebuildIndex.IsEnabled = true;
             SearchKeyword.IsEnabled = true;
             Config.IsEnabled = true;

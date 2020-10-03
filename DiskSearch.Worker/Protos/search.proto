@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+option csharp_namespace = "DiskSearch.Worker.Services";
+
+package search;
+
+service Search {
+	rpc Control (.search.CommandRequest) returns (.search.CommandReply);
+	rpc DoSearch (.search.SearchRequest) returns (.search.SearchReply);
+}
+
+message CommandRequest{
+	enum Command{
+		ReloadBlackList = 0;
+		ReloadPath = 1;
+	}
+	Command cmd = 1;
+	string path = 2;
+}
+
+message CommandReply{
+	bool status = 1;
+}
+
+message SearchRequest {
+	string word = 1;
+	string tag = 2;
+}
+
+message SearchReply {
+	repeated .search.Scheme results = 1;
+}
+
+message Scheme{
+	string Path = 1;
+	string Description = 2;
+}

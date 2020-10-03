@@ -28,8 +28,8 @@
         <ListView x:Name="ResultListView" Margin="25,65,25,70" d:DataContext="{d:DesignData Results}">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="filename" Width="100" DisplayMemberBinding="{Binding Filename}" />
-                    <GridViewColumn Header="path" Width="100" DisplayMemberBinding="{Binding Path}" />
+                    <GridViewColumn Header="filename" Width="125" DisplayMemberBinding="{Binding Filename}" />
+                    <GridViewColumn Header="path" Width="125" DisplayMemberBinding="{Binding Path}" />
                     <GridViewColumn Header="Description">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
@@ -38,7 +38,7 @@
                         </GridViewColumn.CellTemplate>
                         <GridViewColumn.HeaderContainerStyle>
                             <Style TargetType="{x:Type GridViewColumnHeader}">
-                                <Setter Property="MinWidth" Value="550" />
+                                <Setter Property="MinWidth" Value="500" />
                             </Style>
                         </GridViewColumn.HeaderContainerStyle>
                     </GridViewColumn>

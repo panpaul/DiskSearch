@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Text.Json;
 using Database;
 using DocReader;
 
@@ -8,19 +9,17 @@ namespace DiskSearch
 {
     public class Backend
     {
-        private Blacklist _blacklist;
-        private Engine _index;
+        private readonly string _basePath;
+        private readonly Blacklist _blacklist;
+        private readonly Engine _index;
+        private FileSystemWatcher _fsWatcher;
         private bool _init;
 
         public Backend(string path)
         {
-            Setup(path);
-        }
-
-        private void Setup(string path)
-        {
             try
             {
+                _basePath = path;
                 _blacklist = new Blacklist(Path.Combine(path, "blacklist.json"));
                 _index = new Engine(Path.Combine(path, "index"));
                 _init = true;
@@ -28,6 +27,21 @@ namespace DiskSearch
             catch (Exception e)
             {
                 _init = false;
+                Console.WriteLine(e);
+            }
+        }
+
+        public void DefaultSetup()
+        {
+            try
+            {
+                var jsonString = File.ReadAllText(Path.Combine(_basePath, "config.json"));
+                var config = JsonDocument.Parse(jsonString);
+                var path = config.RootElement.GetProperty("SearchPath").GetString();
+                Watch(path);
+            }
+            catch (Exception e)
+            {
                 Console.WriteLine(e);
             }
         }
@@ -109,21 +123,30 @@ namespace DiskSearch
         {
             try
             {
-                var fsWatcher = new FileSystemWatcher(path)
+                _fsWatcher = new FileSystemWatcher(path)
                 {
                     EnableRaisingEvents = true,
                     IncludeSubdirectories = true
                 };
 
-                fsWatcher.Created += Handler;
-                fsWatcher.Changed += Handler;
-                fsWatcher.Deleted += Handler;
-                fsWatcher.Renamed += RenameHandler;
+                _fsWatcher.Created += Handler;
+                _fsWatcher.Changed += Handler;
+                _fsWatcher.Deleted += Handler;
+                _fsWatcher.Renamed += RenameHandler;
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
             }
+        }
+
+        public void UnWatch()
+        {
+            _fsWatcher.Created -= Handler;
+            _fsWatcher.Changed -= Handler;
+            _fsWatcher.Deleted -= Handler;
+            _fsWatcher.Renamed -= RenameHandler;
+            _fsWatcher.Dispose();
         }
 
         private void RenameHandler(object source, RenamedEventArgs e)
