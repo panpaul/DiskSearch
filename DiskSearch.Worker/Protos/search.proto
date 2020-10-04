@@ -14,6 +14,7 @@ message CommandRequest{
 		ReloadBlackList = 0;
 		ReloadPath = 1;
 		DeletePath = 2;
+		FlushData = 3;
 	}
 	Command cmd = 1;
 	string path = 2;

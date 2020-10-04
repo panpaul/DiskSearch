@@ -45,6 +45,9 @@ namespace DiskSearch.Worker.Services
                 case CommandRequest.Types.Command.DeletePath:
                     Worker.Backend.Delete(request.Path);
                     break;
+                case CommandRequest.Types.Command.FlushData:
+                    Worker.Backend.Flush();
+                    break;
                 default:
                     return Task.FromResult(new CommandReply {Status = false});
             }

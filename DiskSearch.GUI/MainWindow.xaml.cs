@@ -77,12 +77,14 @@ namespace DiskSearch.GUI
         private void SearchKeyword_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (_timer.IsEnabled)
-            { // restart the timer
+            {
+                // restart the timer
                 _timer.Stop();
                 _timer.Start();
             }
             else
-            { // just start it
+            {
+                // just start it
                 _timer.Start();
             }
         }

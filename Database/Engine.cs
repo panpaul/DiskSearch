@@ -87,6 +87,11 @@ namespace Database
             }
         }
 
+        public void DeleteAll()
+        {
+            _writer.DeleteAll();
+        }
+
         public IEnumerable<Scheme> Search(string word, string tag)
         {
             try
@@ -173,9 +178,9 @@ namespace Database
             }
         }
 
-        public void DeleteAll()
+        public void Flush()
         {
-            _writer.DeleteAll();
+            _writer.Flush(true, true);
         }
 
         public struct Scheme

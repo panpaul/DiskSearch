@@ -31,29 +31,34 @@ namespace DiskSearch
             }
         }
 
-        public void DefaultSetup()
+        #region Main Functions
+
+        public IEnumerable<Engine.Scheme> Search(string word, string tag)
         {
-            try
-            {
-                var jsonString = File.ReadAllText(Path.Combine(_basePath, "config.json"));
-                var config = JsonDocument.Parse(jsonString);
-                var path = config.RootElement.GetProperty("SearchPath").GetString();
-                Watch(path);
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e);
-            }
+            tag = tag.ToLower();
+            if (tag.Equals("all")) tag = "";
+
+            return _init ? _index.Search(word, tag) : null;
         }
 
-        public void Close()
+        public void Delete(string filepath)
         {
-            _init = false;
-            _index?.Close();
+            if (_init) _index.Delete(filepath);
         }
+
+        public void DeleteAll()
+        {
+            if (_init) _index.DeleteAll();
+        }
+
+        #endregion
+
+        #region Walk And Monitor
 
         public void Walk(string path)
         {
+            if (!_init) return;
+
             try
             {
                 // disallow querying while walking
@@ -121,6 +126,7 @@ namespace DiskSearch
 
         public void Watch(string path)
         {
+            if (!_init) return;
             try
             {
                 _fsWatcher = new FileSystemWatcher(path)
@@ -142,6 +148,7 @@ namespace DiskSearch
 
         public void UnWatch()
         {
+            if (!_init) return;
             _fsWatcher.Created -= Handler;
             _fsWatcher.Changed -= Handler;
             _fsWatcher.Deleted -= Handler;
@@ -209,27 +216,42 @@ namespace DiskSearch
             }
         }
 
-        public IEnumerable<Engine.Scheme> Search(string word, string tag)
-        {
-            tag = tag.ToLower();
-            if (tag.Equals("all")) tag = "";
+        #endregion
 
-            return _init ? _index.Search(word, tag) : null;
-        }
-
-        public void Delete(string filepath)
-        {
-            if (_init) _index.Delete(filepath);
-        }
-
-        public void DeleteAll()
-        {
-            if (_init) _index.DeleteAll();
-        }
+        #region Status Control
 
         public void UpdateBlackList()
         {
             _blacklist.Update();
         }
+
+        public void DefaultSetup()
+        {
+            try
+            {
+                var jsonString = File.ReadAllText(Path.Combine(_basePath, "config.json"));
+                var config = JsonDocument.Parse(jsonString);
+                var path = config.RootElement.GetProperty("SearchPath").GetString();
+                Watch(path);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
+        }
+
+        public void Close()
+        {
+            _init = false;
+            _index?.Close();
+        }
+
+        public void Flush()
+        {
+            if (!_init) return;
+            _index.Flush();
+        }
+
+        #endregion
     }
 }
