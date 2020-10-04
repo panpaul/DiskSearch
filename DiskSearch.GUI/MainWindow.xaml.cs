@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Threading;
 using DiskSearch.Worker.Services;
 using Grpc.Net.Client;
 using Sentry;
@@ -16,6 +17,7 @@ namespace DiskSearch.GUI
     {
         private readonly Config _config;
         private readonly BindingList<Results> _resultList;
+        private readonly DispatcherTimer _timer;
         private GrpcChannel _channel;
         private Search.SearchClient _client;
 
@@ -51,25 +53,38 @@ namespace DiskSearch.GUI
             /* RPC */
             SetupRemote();
 
+            /* Timer */
+            _timer = new DispatcherTimer
+            {
+                Interval = TimeSpan.FromSeconds(1) // every 1 seconds
+            };
+            _timer.Tick += OnTimedEvent;
+
             Closed += OnClosedEvent;
         }
 
-        private void OnClosedEvent(object sender, EventArgs e)
-        {
-            TaskBar.Dispose();
-            _channel.Dispose();
-        }
+        #region Search Related
 
-        private void MainWindow_OnStateChanged(object sender, EventArgs e)
+        private void OnTimedEvent(object sender, EventArgs e)
         {
-            ShowInTaskbar = WindowState != WindowState.Minimized;
+            _timer.Stop();
+            var word = SearchKeyword.Text;
+            var tag = TagSelector.Text;
+            SearchHint.Content = $"Searching for: {word} with tag: {tag}.";
+            Task.Run(() => { DoSearch(word, tag); });
         }
 
         private void SearchKeyword_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var word = SearchKeyword.Text;
-            var tag = TagSelector.Text;
-            Task.Run(() => { DoSearch(word, tag); });
+            if (_timer.IsEnabled)
+            { // restart the timer
+                _timer.Stop();
+                _timer.Start();
+            }
+            else
+            { // just start it
+                _timer.Start();
+            }
         }
 
         private void TagSelector_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -110,6 +125,41 @@ namespace DiskSearch.GUI
             if (oldPath != _config.SearchPath)
                 RebuildIndex_Click(sender, e);
         }
+
+        /// <summary>
+        ///     Search files through worker
+        /// </summary>
+        /// <param name="word">keyword</param>
+        /// <param name="tag">file type tag</param>
+        private void DoSearch(string word, string tag)
+        {
+            var results = _client.DoSearch(new SearchRequest {Tag = tag, Word = word});
+            Dispatcher.BeginInvoke((Action) delegate
+            {
+                if (SearchKeyword.Text != word || TagSelector.Text != tag) return;
+                _resultList.Clear();
+                foreach (var scheme in results.Results)
+                {
+                    if (scheme.Path.Equals("null")) continue;
+                    _resultList.Add(new Results(scheme));
+                }
+            });
+        }
+
+        /// <summary>
+        ///     Connect to DiskSearch.Worker
+        /// </summary>
+        private void SetupRemote()
+        {
+            _channel = GrpcChannel.ForAddress("https://localhost:5001");
+            _client = new Search.SearchClient(_channel);
+
+            RestoreInput();
+        }
+
+        #endregion
+
+        #region Menu Item
 
         private void MenuItem_OpenDir_Click(object sender, RoutedEventArgs e)
         {
@@ -159,6 +209,36 @@ namespace DiskSearch.GUI
             Clipboard.SetText(item.Path);
         }
 
+        #endregion
+
+        #region Window & Tray
+
+        /// <summary>
+        ///     Minimize
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MainWindow_OnStateChanged(object sender, EventArgs e)
+        {
+            ShowInTaskbar = WindowState != WindowState.Minimized;
+        }
+
+        /// <summary>
+        ///     Shutdown method
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnClosedEvent(object sender, EventArgs e)
+        {
+            TaskBar.Dispose();
+            _channel.Dispose();
+        }
+
+        /// <summary>
+        ///     Tray Open/Hide button clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Tray_Open_Click(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState switch
@@ -170,40 +250,14 @@ namespace DiskSearch.GUI
             };
         }
 
+        /// <summary>
+        ///     Tray Exit button clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void Tray_Exit_Click(object sender, RoutedEventArgs e)
         {
             Close();
-        }
-
-        /// <summary>
-        ///     Search files through worker
-        /// </summary>
-        /// <param name="word">keyword</param>
-        /// <param name="tag">file type tag</param>
-        private void DoSearch(string word, string tag)
-        {
-            var results = _client.DoSearch(new SearchRequest {Tag = tag, Word = word});
-            Dispatcher.BeginInvoke((Action) delegate
-            {
-                if (SearchKeyword.Text != word || TagSelector.Text != tag) return;
-                _resultList.Clear();
-                foreach (var scheme in results.Results)
-                {
-                    if (scheme.Path.Equals("null")) continue;
-                    _resultList.Add(new Results(scheme));
-                }
-            });
-        }
-
-        /// <summary>
-        ///     Connect to DiskSearch.Worker
-        /// </summary>
-        private void SetupRemote()
-        {
-            _channel = GrpcChannel.ForAddress("https://localhost:5001");
-            _client = new Search.SearchClient(_channel);
-
-            RestoreInput();
         }
 
         /// <summary>
@@ -225,6 +279,8 @@ namespace DiskSearch.GUI
             RebuildIndex.IsEnabled = true;
             Config.IsEnabled = true;
         }
+
+        #endregion
     }
 
     internal class Results

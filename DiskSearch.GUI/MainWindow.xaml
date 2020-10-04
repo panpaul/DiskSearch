@@ -76,6 +76,7 @@
             <ComboBoxItem Content="Image"/>
             <ComboBoxItem Content="PDF"/>
         </ComboBox>
+        <Label x:Name="SearchHint" Content="Searching for:" Margin="195,0,25,27" VerticalAlignment="Bottom" Height="25"/>
 
     </Grid>
 </Window>
