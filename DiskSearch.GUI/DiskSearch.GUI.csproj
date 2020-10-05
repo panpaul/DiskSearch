@@ -6,9 +6,9 @@
     <UseWPF>true</UseWPF>
     <UseWindowsForms>true</UseWindowsForms>
     <ApplicationIcon>logo.ico</ApplicationIcon>
-    <AssemblyVersion>1.0.5.1</AssemblyVersion>
-    <FileVersion>1.0.5.1</FileVersion>
-    <Version>1.0.5</Version>
+    <AssemblyVersion>1.0.6.1</AssemblyVersion>
+    <FileVersion>1.0.6.1</FileVersion>
+    <Version>1.0.6</Version>
     <Authors>Paul</Authors>
     <Company>ldcraft</Company>
     <Product>DiskSearch</Product>
@@ -31,8 +31,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\DiskSearch\DiskSearch.csproj" />
     <ProjectReference Include="..\MachineCode\MachineCode.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

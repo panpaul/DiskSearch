@@ -12,6 +12,7 @@ namespace DiskSearch.Worker
         {
             services.AddGrpc();
             services.AddGrpcReflection();
+            services.AddHostedService<Services.Worker>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

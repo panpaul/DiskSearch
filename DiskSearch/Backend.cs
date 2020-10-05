@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Text.Json;
 using Database;
 using DocReader;
+using Utils;
 
 namespace DiskSearch
 {
@@ -149,6 +149,7 @@ namespace DiskSearch
         public void UnWatch()
         {
             if (!_init) return;
+            if (_fsWatcher == null) return;
             _fsWatcher.Created -= Handler;
             _fsWatcher.Changed -= Handler;
             _fsWatcher.Deleted -= Handler;
@@ -229,10 +230,8 @@ namespace DiskSearch
         {
             try
             {
-                var jsonString = File.ReadAllText(Path.Combine(_basePath, "config.json"));
-                var config = JsonDocument.Parse(jsonString);
-                var path = config.RootElement.GetProperty("SearchPath").GetString();
-                Watch(path);
+                var config = new Config(Path.Combine(_basePath, "config.json"));
+                Watch(config.SearchPath);
             }
             catch (Exception e)
             {

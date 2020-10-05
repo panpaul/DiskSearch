@@ -2,9 +2,9 @@
 using System.IO;
 using System.Text.Json;
 
-namespace DiskSearch.GUI
+namespace Utils
 {
-    internal class Config
+    public class Config
     {
         private readonly string _configPath;
 
@@ -24,7 +24,6 @@ namespace DiskSearch.GUI
                         "config.json"
                     );
                 Read();
-                
             }
             catch (Exception e)
             {

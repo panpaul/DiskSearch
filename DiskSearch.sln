@@ -23,7 +23,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ImageReader", "ImageReader\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileType", "FileType\FileType.csproj", "{35324AF4-4FF0-4951-B4C4-6ECED33F9724}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DiskSearch.Worker", "DiskSearch.Worker\DiskSearch.Worker.csproj", "{031486E5-BCBF-402E-97D7-1E39BFC6844F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiskSearch.Worker", "DiskSearch.Worker\DiskSearch.Worker.csproj", "{031486E5-BCBF-402E-97D7-1E39BFC6844F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{82234072-A1BC-4791-92CA-A23E6AF0C782}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -75,6 +77,10 @@ Global
 		{031486E5-BCBF-402E-97D7-1E39BFC6844F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{031486E5-BCBF-402E-97D7-1E39BFC6844F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{031486E5-BCBF-402E-97D7-1E39BFC6844F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82234072-A1BC-4791-92CA-A23E6AF0C782}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82234072-A1BC-4791-92CA-A23E6AF0C782}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82234072-A1BC-4791-92CA-A23E6AF0C782}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82234072-A1BC-4791-92CA-A23E6AF0C782}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

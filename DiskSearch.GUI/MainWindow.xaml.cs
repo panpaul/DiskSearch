@@ -10,6 +10,7 @@ using DiskSearch.Worker.Services;
 using Grpc.Net.Client;
 using Sentry;
 using Sentry.Protocol;
+using Utils;
 
 namespace DiskSearch.GUI
 {
@@ -153,7 +154,9 @@ namespace DiskSearch.GUI
         /// </summary>
         private void SetupRemote()
         {
-            _channel = GrpcChannel.ForAddress("https://localhost:5001");
+            AppContext.SetSwitch(
+                "System.Net.Http.SocketsHttpHandler.Http2UnencryptedSupport", true);
+            _channel = GrpcChannel.ForAddress("http://127.0.0.1:64300");
             _client = new Search.SearchClient(_channel);
 
             RestoreInput();
@@ -230,10 +233,10 @@ namespace DiskSearch.GUI
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void OnClosedEvent(object sender, EventArgs e)
+        private async void OnClosedEvent(object sender, EventArgs e)
         {
             TaskBar.Dispose();
-            _channel.Dispose();
+            await _channel.ShutdownAsync();
         }
 
         /// <summary>

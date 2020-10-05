@@ -5,9 +5,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <StartupObject>DiskSearch.Program</StartupObject>
     <Authors>Paul</Authors>
-    <Version>1.0.1</Version>
-    <AssemblyVersion>1.0.1.4</AssemblyVersion>
-    <FileVersion>1.0.1.4</FileVersion>
+    <Version>1.0.2</Version>
+    <AssemblyVersion>1.0.2.1</AssemblyVersion>
+    <FileVersion>1.0.2.1</FileVersion>
     <Company>ldcraft</Company>
     <ApplicationIcon>logo.ico</ApplicationIcon>
   </PropertyGroup>
@@ -24,6 +24,7 @@
     <ProjectReference Include="..\Database\Database.csproj" />
     <ProjectReference Include="..\DocReader\DocReader.csproj" />
     <ProjectReference Include="..\MachineCode\MachineCode.csproj" />
+    <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>
 
   <ItemGroup>

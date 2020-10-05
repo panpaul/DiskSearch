@@ -1,5 +1,5 @@
+using System.Net;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Sentry.Extensibility;
@@ -19,8 +19,6 @@ namespace DiskSearch.Worker
             return Host.CreateDefaultBuilder(args)
                 .UseWindowsService()
                 .UseSystemd()
-                .UseConsoleLifetime()
-                .ConfigureServices(services => { services.AddHostedService<Services.Worker>(); })
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseSentry(o =>
@@ -38,6 +36,13 @@ namespace DiskSearch.Worker
                         {
                             scope.User = new User {Id = MachineCode.MachineCode.GetMachineCode()};
                         });
+                    });
+
+                    webBuilder.ConfigureKestrel(serverOptions =>
+                    {
+                        serverOptions.Listen(IPAddress.Loopback, 64300);
+                        //serverOptions.Listen(IPAddress.Loopback, 64301,
+                        //    listenOption => { listenOption.UseHttps("cert.pfx", "password"); });
                     });
                     webBuilder.UseStartup<Startup>();
                 });
