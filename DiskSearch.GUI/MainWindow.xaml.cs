@@ -71,7 +71,6 @@ namespace DiskSearch.GUI
             _timer.Stop();
             var word = SearchKeyword.Text;
             var tag = TagSelector.Text;
-            SearchHint.Content = $"Searching for: {word} with tag: {tag}.";
             Task.Run(() => { DoSearch(word, tag); });
         }
 
@@ -146,6 +145,7 @@ namespace DiskSearch.GUI
                     if (scheme.Path.Equals("null")) continue;
                     _resultList.Add(new Results(scheme));
                 }
+                SearchHint.Content = $"Search Result for: {word} with tag: {tag}.";
             });
         }
 
