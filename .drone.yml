@@ -1,5 +1,9 @@
 kind: pipeline
 
+platform:
+  os: linux
+  arch: amd64
+
 steps:
 - name: compile
   image: mcr.microsoft.com/dotnet/core/sdk:3.1
