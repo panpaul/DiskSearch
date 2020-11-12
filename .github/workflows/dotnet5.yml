@@ -1,4 +1,4 @@
-name: .NET Core Desktop
+name: .NET5
 
 on:
   push:
@@ -21,7 +21,7 @@ jobs:
     - name: Install .NET Core
       uses: actions/setup-dotnet@v1
       with:
-        dotnet-version: 3.1.101
+        dotnet-version: 5.0
 
     - name: Publish DiskSearch.GUI
       run: dotnet publish -p:PublishProfile=DiskSearch.GUI\Properties\CI.pubxml

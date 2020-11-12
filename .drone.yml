@@ -6,30 +6,30 @@ platform:
 
 steps:
 - name: compile
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  image: mcr.microsoft.com/dotnet/sdk:5.0
   commands:
     - dotnet restore DiskSearch
     - dotnet publish --no-restore DiskSearch
 
 - name: Database.Test
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  image: mcr.microsoft.com/dotnet/sdk:5.0
   commands:
     - dotnet restore Database.Test
-    - mkdir -p Database.Test/bin/Debug/netcoreapp3.1/index
+    - mkdir -p Database.Test/bin/Debug/net5.0/index
     - dotnet test --no-restore Database.Test
   depends_on:
     - compile
     
 - name: DocReader.Test
-  image: mcr.microsoft.com/dotnet/core/sdk:3.1
+  image: mcr.microsoft.com/dotnet/sdk:5.0
   commands:
     - export DIR=`pwd`
     - dotnet restore DocReader.Test
     - apt update && apt install -y unzip libgdiplus
     - wget -4 https://github.com/dotnet/samples/raw/master/machine-learning/tutorials/TransferLearningTF/image-classifier-assets.zip
-    - mkdir -p DocReader.Test/bin/Debug/netcoreapp3.1
+    - mkdir -p DocReader.Test/bin/Debug/net5.0
     - unzip image-classifier-assets.zip
-    - mv assets DocReader.Test/bin/Debug/netcoreapp3.1/
+    - mv assets DocReader.Test/bin/Debug/net5.0/
     - cd ~/.nuget/packages/scisharp.tensorflow.redist/2.3.1/runtimes/linux-x64/native/
     - rm *.so
     - wget -4 https://storage.googleapis.com/tensorflow/libtensorflow/libtensorflow-cpu-linux-x86_64-2.3.1.tar.gz 
