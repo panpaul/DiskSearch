@@ -76,7 +76,7 @@ namespace DiskSearch
         {
             var dirs = new Stack<string>();
 
-            if (!Directory.Exists(root)) throw new ArgumentException();
+            if (!Directory.Exists(root)) throw new ArgumentException("Directory Not Existed");
 
             dirs.Push(root);
 

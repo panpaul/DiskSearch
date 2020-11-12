@@ -104,14 +104,14 @@ namespace DocReader.Test
             Assert.IsTrue(strActual.Contains(strExpected));
         }
 
-        [TestCase("pizza.jpg")]
+        [TestCase("p_i_z_z_a.jpg")]
         [TestCase("pic_invalid.jpg")]
         public void DocReadImage_Test(string testCase)
         {
             var file = new FileInfo(Convert(testCase));
 
             var strActual = Doc.Read(file).Get("Content");
-            var strExpected = "pizza";
+            var strExpected = "food";
 
             if (testCase.Contains("invalid")) strExpected = "Broken";
 

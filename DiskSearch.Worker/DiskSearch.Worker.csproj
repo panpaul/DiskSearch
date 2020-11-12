@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net5.0</TargetFramework>
     <UserSecretsId>3ebdb1bc-357e-4558-95ac-35913554caa7</UserSecretsId>
     <Authors>Paul</Authors>
     <Company>ldcraft</Company>
@@ -16,8 +16,8 @@
     <PackageReference Include="Grpc.AspNetCore" Version="2.33.1" />
     <PackageReference Include="Grpc.AspNetCore.Server.Reflection" Version="2.33.1" />
     <PackageReference Include="Grpc.AspNetCore.Web" Version="2.33.1" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="3.1.9" />
-    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="3.1.9" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.Systemd" Version="5.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="5.0.0" />
     <PackageReference Include="Sentry" Version="2.1.6" />
     <PackageReference Include="Sentry.AspNetCore" Version="2.1.6" />
   </ItemGroup>
