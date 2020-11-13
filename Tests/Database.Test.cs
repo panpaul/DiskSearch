@@ -1,21 +1,23 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Linq;
+using Database;
 using NUnit.Framework;
 
-namespace Database.Test
+namespace Tests
 {
-    public class Tests
+    [TestFixture]
+    public class Database
     {
-        private static readonly Random _rd = new Random();
-        private Engine _index;
-
         [SetUp]
         public void Setup()
         {
             Directory.Delete("./index", true);
             _index = new Engine("./index");
         }
+
+        private static readonly Random Rd = new Random();
+        private Engine _index;
 
         [Test]
         public void Scheme_Add_Search_Test()
@@ -56,6 +58,7 @@ namespace Database.Test
             resultIndex = _index.Search("index", "x");
             Assert.AreEqual(0, resultIndex.Count());
 
+            _index.Flush();
             _index.Close();
         }
 
@@ -70,7 +73,7 @@ namespace Database.Test
             };
 
             var checkCode = string.Empty;
-            for (var i = 0; i < length; i++) checkCode += constant[_rd.Next(36)].ToString();
+            for (var i = 0; i < length; i++) checkCode += constant[Rd.Next(36)].ToString();
 
             return checkCode;
         }

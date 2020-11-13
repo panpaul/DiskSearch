@@ -40,7 +40,7 @@ namespace DocReader
         {
             var sb = new StringBuilder();
             sb.Append(PinyinHelper.GetPinyin(str));
-            sb.Append(" ");
+            sb.Append(' ');
             sb.Append(PinyinHelper.GetPinyinInitials(str));
             return CleanUpSpaces(sb.ToString());
         }

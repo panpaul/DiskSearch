@@ -20,7 +20,7 @@ namespace TinyPinyin
 
         public static string GetPinyin(string str, string separator = " ")
         {
-            return PinyinEngine.ToPinyin(str, null, null, separator);
+            return PinyinEngine.ToPinyin(str, separator);
         }
 
 

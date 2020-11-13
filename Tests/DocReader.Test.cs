@@ -1,10 +1,11 @@
-using System.IO;
+﻿using System.IO;
+using DocReader;
 using NUnit.Framework;
 
-namespace DocReader.Test
+namespace Tests
 {
     [TestFixture]
-    public class Tests
+    public class DocReader
     {
         [SetUp]
         public void Setup()
@@ -13,8 +14,8 @@ namespace DocReader.Test
 
         private static string Convert(string file)
         {
-            if (TestContext.CurrentContext.WorkDirectory.Contains("netcoreapp3.1"))
-                // test located in \bin\Debug\netcoreapp3.1
+            if (TestContext.CurrentContext.WorkDirectory.Contains("net5.0"))
+                // test located in \bin\Debug\net5.0
                 return "../../../../TestData/" + file;
             return "./TestData/" + file;
         }

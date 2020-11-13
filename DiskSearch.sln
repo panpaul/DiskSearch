@@ -9,10 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database", "Database\Databa
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocReader", "DocReader\DocReader.csproj", "{DE78999C-41A2-47A4-8116-B3406B58950C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DocReader.Test", "DocReader.Test\DocReader.Test.csproj", "{A22C79A8-854E-4507-947D-D803F602411A}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Database.Test", "Database.Test\Database.Test.csproj", "{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TinyPinyin", "TinyPinyin\TinyPinyin.csproj", "{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiskSearch.GUI", "DiskSearch.GUI\DiskSearch.GUI.csproj", "{3796FCFC-56E7-4742-98A3-4391ECB0ED7C}"
@@ -25,7 +21,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "FileType", "FileType\FileTy
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiskSearch.Worker", "DiskSearch.Worker\DiskSearch.Worker.csproj", "{031486E5-BCBF-402E-97D7-1E39BFC6844F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{82234072-A1BC-4791-92CA-A23E6AF0C782}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Utils", "Utils\Utils.csproj", "{82234072-A1BC-4791-92CA-A23E6AF0C782}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{91B3634D-39FE-42C4-AFBB-B3390D95D86A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,14 +43,6 @@ Global
 		{DE78999C-41A2-47A4-8116-B3406B58950C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DE78999C-41A2-47A4-8116-B3406B58950C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DE78999C-41A2-47A4-8116-B3406B58950C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A22C79A8-854E-4507-947D-D803F602411A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A22C79A8-854E-4507-947D-D803F602411A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A22C79A8-854E-4507-947D-D803F602411A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A22C79A8-854E-4507-947D-D803F602411A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BC46084-8F70-44DB-9B1A-FCB828C7EB1D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{24E595F9-3FC3-48F2-B00B-5D42521A3CA8}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -81,6 +71,10 @@ Global
 		{82234072-A1BC-4791-92CA-A23E6AF0C782}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82234072-A1BC-4791-92CA-A23E6AF0C782}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82234072-A1BC-4791-92CA-A23E6AF0C782}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B3634D-39FE-42C4-AFBB-B3390D95D86A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B3634D-39FE-42C4-AFBB-B3390D95D86A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B3634D-39FE-42C4-AFBB-B3390D95D86A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B3634D-39FE-42C4-AFBB-B3390D95D86A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

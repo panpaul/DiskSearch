@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
 
@@ -50,6 +51,7 @@ namespace Utils
         {
             var jsonString = File.ReadAllText(_configPath);
             var config = JsonSerializer.Deserialize<Config>(jsonString);
+            Debug.Assert(config != null, nameof(config) + " != null");
             SearchPath = config.SearchPath;
         }
     }
