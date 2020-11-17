@@ -12,7 +12,7 @@
 
   <ItemGroup>
     <PackageReference Include="jieba.NET" Version="0.42.2" />
-    <PackageReference Include="Lucene.Net" Version="4.8.0-beta00012" />
+    <PackageReference Include="Lucene.Net" Version="4.8.0-beta00013" />
     <PackageReference Include="Lucene.Net.Analysis.Common" Version="4.8.0-beta00012" />
     <PackageReference Include="Lucene.Net.Highlighter" Version="4.8.0-beta00012" />
     <PackageReference Include="Lucene.Net.Queries" Version="4.8.0-beta00012" />
